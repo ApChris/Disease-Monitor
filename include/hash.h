@@ -1,6 +1,6 @@
 #ifndef _HASHTABLE_H_
 #define _HASHTABLE_H_
-#include <stdio.h> 
+#include <stdio.h>
 #include <stdbool.h>
 #include <errno.h>
 #include <stdlib.h>
