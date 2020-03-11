@@ -18,7 +18,7 @@ long long Hash_Function_DJB2(unsigned char *str) // This function IS NOT mine, s
 
 // ----------------------------- PATIENTINFO -----------------------------
 
-PatientInfo * PatientInfo_Init(const char * fullName,const char * lastName,const char * disease, const char * country, Date * dateEntry, Date * dateExit)
+PatientInfo * Patient_PatientInfo_Init(const char * recordID, const char * patientFirstName ,const char * patientLastName,const char * diseaseID, const char * country, Date * entryDate, Date * exitDate)
 {
     PatientInfo * info;
     int char_counter = 0;
@@ -29,101 +29,117 @@ PatientInfo * PatientInfo_Init(const char * fullName,const char * lastName,const
         exit(EXIT_FAILURE);
     }
 
-    // TransactionID
-    char_counter = strlen(fullName) + 1;
-    if( (info -> fullName = malloc(1 + sizeof(char) * char_counter)) == NULL)
+    // recordID
+    char_counter = strlen(recordID) + 1;
+    if( (info -> recordID = malloc(1 + sizeof(char) * char_counter)) == NULL)
     {
-        perror("Error(TransactionInfo_Init): ");
+        perror("Error(PatientInfo_Init): ");
         exit(EXIT_FAILURE);
     }
-    strcpy(info -> fullName,fullName);
-    info -> fullName[char_counter] = '\0';
+    strcpy(info -> recordID,recordID);
+    info -> recordID[char_counter] = '\0';
 
 
-    // lastName
-    char_counter = strlen(lastName) + 1;
-    if( (info -> lastName = malloc(1 + sizeof(char) * char_counter)) == NULL)
+    // patientFirstName
+    char_counter = strlen(patientFirstName) + 1;
+    if( (info -> patientFirstName = malloc(1 + sizeof(char) * char_counter)) == NULL)
     {
-        perror("Error(TransactionInfo_Init): ");
+        perror("Error(PatientInfo_Init): ");
         exit(EXIT_FAILURE);
     }
-    strcpy(info -> lastName,lastName);
-    info -> lastName[char_counter] = '\0';
+    strcpy(info -> patientFirstName,patientFirstName);
+    info -> patientFirstName[char_counter] = '\0';
 
 
-    // disease
-    char_counter = strlen(disease) + 1;
-    if( (info -> disease = malloc(1 + sizeof(char) * char_counter)) == NULL)
+    // patientLastName
+    char_counter = strlen(patientLastName) + 1;
+    if( (info -> patientLastName = malloc(1 + sizeof(char) * char_counter)) == NULL)
     {
-        perror("Error(TransactionInfo_Init): ");
+        perror("Error(PatientInfo_Init): ");
         exit(EXIT_FAILURE);
     }
-    strcpy(info -> disease,disease);
-    info -> disease[char_counter] = '\0';
+    strcpy(info -> patientLastName,patientLastName);
+    info -> patientLastName[char_counter] = '\0';
+
+
+    // diseaseID
+    char_counter = strlen(diseaseID) + 1;
+    if( (info -> diseaseID = malloc(1 + sizeof(char) * char_counter)) == NULL)
+    {
+        perror("Error(PatientInfo_Init): ");
+        exit(EXIT_FAILURE);
+    }
+    strcpy(info -> diseaseID,diseaseID);
+    info -> diseaseID[char_counter] = '\0';
 
     // country
     char_counter = strlen(country) + 1;
     if( (info -> country = malloc(1 + sizeof(char) * char_counter)) == NULL)
     {
-        perror("Error(TransactionInfo_Init): ");
+        perror("Error(PatientInfo_Init): ");
         exit(EXIT_FAILURE);
     }
     strcpy(info -> country,country);
     info -> country[char_counter] = '\0';
 
 
-    // Date
-    if( (info -> dateEntry = malloc(sizeof(* dateEntry))) == NULL)
+    // entryDate
+    if( (info -> entryDate = malloc(sizeof(* entryDate))) == NULL)
     {
         perror("Error(PatientInfo): ");
         exit(EXIT_FAILURE);
     }
-    info -> dateEntry -> day = dateEntry -> day;
-    info -> dateEntry -> month = dateEntry -> month;
-    info -> dateEntry -> year = dateEntry -> year;
+    info -> entryDate -> day = entryDate -> day;
+    info -> entryDate -> month = entryDate -> month;
+    info -> entryDate -> year = entryDate -> year;
 
 
     // Date
-    if((info -> dateExit = malloc(sizeof(* dateExit))) == NULL)
+    if((info -> exitDate = malloc(sizeof(* exitDate))) == NULL)
     {
         perror("Error(PatientInfo): ");
         exit(EXIT_FAILURE);
     }
-    info -> dateExit -> day = dateExit -> day;
-    info -> dateExit -> month = dateExit -> month;
-    info -> dateExit -> year = dateExit -> year;
+    info -> exitDate -> day = exitDate -> day;
+    info -> exitDate -> month = exitDate -> month;
+    info -> exitDate -> year = exitDate -> year;
 
     return info;
 }
 
 
-void PatientInfo_Print(const PatientInfo * info)
+void Patient_PatientInfo_Print(const PatientInfo * info)
 {
-    printf("%s %s %s %s %ld-%ld-%ld %ld-%ld-%ld\n",info -> fullName, info -> lastName,
-     info -> disease, info -> country, info -> dateEntry -> day, info -> dateEntry -> month, info -> dateEntry -> year, info -> dateExit -> day, info -> dateExit -> month, info -> dateExit -> year);
+    printf("%s %s %s %s %s %ld-%ld-%ld %ld-%ld-%ld\n",info -> recordID, info -> patientFirstName, info -> patientLastName,
+     info -> diseaseID, info -> country, info -> entryDate -> day, info -> entryDate -> month, info -> entryDate -> year, info -> exitDate -> day, info -> exitDate -> month, info -> exitDate -> year);
 }
 
-void PatientInfo_Deallocate(PatientInfo ** info)
+void Patient_PatientInfo_Deallocate(PatientInfo ** info)
 {
-    free((*info) -> fullName);
-    free((*info) -> lastName);
-    free((*info) -> disease);
+    free((*info) -> recordID);
+    free((*info) -> patientFirstName);
+    free((*info) -> patientLastName);
+    free((*info) -> diseaseID);
     free((*info) -> country);
-    free((*info) -> dateEntry);
-    free((*info) -> dateExit);
+    free((*info) -> entryDate);
+    free((*info) -> exitDate);
 
     free(*info);
     *info = NULL;
 }
 
-Date * PatientInfo_DateEntry(const PatientInfo * info)
+Date * Patient_PatientInfo_EntryDate(const PatientInfo * info)
 {
-    return info -> dateEntry;
+    return info -> entryDate;
 }
 
+Date * Patient_PatientInfo_ExitDate(const PatientInfo * info)
+{
+    return info -> exitDate;
+}
 
 // ----------------------------- PATIENT -----------------------------
-static Patient * Patient_Init(size_t size)
+static Patient * Patient_Patient_Init(size_t size)
 {
     size_t i = 0;
     Patient * patient = malloc(sizeof(*patient));
@@ -151,7 +167,7 @@ static Patient * Patient_Init(size_t size)
     return patient;
 }
 
-static void Patient_Insert(Patient * patient, PatientInfo * info)
+static void Patient_Patient_Insert(Patient * patient, PatientInfo * info)
 {
     if( (patient -> length) < (patient -> size) )
     {
@@ -160,23 +176,23 @@ static void Patient_Insert(Patient * patient, PatientInfo * info)
     }
     else if(patient -> next != NULL)
     {
-        Patient_Insert(patient->next, info);
+        Patient_Patient_Insert(patient->next, info);
     }
     else
     {
-        patient -> next = Patient_Init(patient -> size);
-        Patient_Insert(patient -> next, info);
+        patient -> next = Patient_Patient_Init(patient -> size);
+        Patient_Patient_Insert(patient -> next, info);
     }
 }
 
 // ----------------------------- BUCKET NODE -----------------------------
-static BucketNode * BucketNode_Init(long long number, size_t size)
+static BucketNode * Patient_BucketNode_Init(long long number, size_t size)
 {
     BucketNode * bucketnode = malloc(sizeof(*bucketnode));
 
     if(bucketnode == NULL)
     {
-        perror("Error(Wallet_Init): ");
+        perror("Error(Patient_BucketNode_Init): ");
         exit(EXIT_FAILURE);
     }
 
@@ -187,19 +203,19 @@ static BucketNode * BucketNode_Init(long long number, size_t size)
     return bucketnode;
 }
 
-static void BucketNode_Insert(BucketNode * bucketnode, PatientInfo * info)
+static void Patient_BucketNode_Insert(BucketNode * bucketnode, PatientInfo * info)
 {
     if(bucketnode -> head == NULL)
     {
-        bucketnode -> head = Patient_Init(bucketnode -> size);
+        bucketnode -> head = Patient_Patient_Init(bucketnode -> size);
     }
-    Patient_Insert(bucketnode -> head, info);
+    Patient_Patient_Insert(bucketnode -> head, info);
 
 }
 
 
 // ----------------------------- BUCKET -----------------------------
-static Bucket * Bucket_Init(size_t bucketSize)
+static Bucket * Patient_Bucket_Init(size_t bucketSize)
 {
     size_t i = 0;
     Bucket * bucket;
@@ -230,34 +246,34 @@ static Bucket * Bucket_Init(size_t bucketSize)
     return bucket;
 }
 
-static void Bucket_Insert(Bucket * bucket, long long number, PatientInfo * info)
+static void Patient_Bucket_Insert(Bucket * bucket, long long number, PatientInfo * info)
 {
     size_t i = 0;
     while(i < bucket -> length)
     {
         if(bucket -> nodes[i] -> number == number) // If already exists
         {
-            BucketNode_Insert(bucket -> nodes[i], info);
+            Patient_BucketNode_Insert(bucket -> nodes[i], info);
             return;
         }
         i++;
     }
     if(bucket -> next != NULL) // Go to last bucket
     {
-        Bucket_Insert(bucket -> next, number , info);
+        Patient_Bucket_Insert(bucket -> next, number , info);
     }
     else if(bucket -> length < bucket -> size)  // If the number that can hold this bucket is < of the total number of nodes that can hold then
     {
-        bucket -> nodes[bucket->length] = BucketNode_Init(number, bucket -> size);
-        BucketNode_Insert(bucket -> nodes[bucket -> length], info);
+        bucket -> nodes[bucket->length] = Patient_BucketNode_Init(number, bucket -> size);
+        Patient_BucketNode_Insert(bucket -> nodes[bucket -> length], info);
         ++bucket->length;
 
     }
     else // That means that we are at the end of buckets and we are going to create a new bucket because the last entry can't be put in previous last bucket
     {
 
-        bucket -> next = Bucket_Init(bucket -> size);
-        Bucket_Insert(bucket -> next, number, info);
+        bucket -> next = Patient_Bucket_Init(bucket -> size);
+        Patient_Bucket_Insert(bucket -> next, number, info);
     }
 
 }
@@ -265,7 +281,7 @@ static void Bucket_Insert(Bucket * bucket, long long number, PatientInfo * info)
 
 // ----------------------------- HASH -----------------------------------------
 
-Hash * Hash_Init(size_t hashSize, size_t bucketSize)
+Hash * Patient_Hash_Init(size_t hashSize, size_t bucketSize)
 {
     size_t i = 0;                                        // init a counter for buckettable
 
@@ -303,14 +319,14 @@ Hash * Hash_Init(size_t hashSize, size_t bucketSize)
 
 
 
-void Hash_Insert(Hash * ht, long long number, PatientInfo * info)
+void Patient_Hash_Insert(Hash * ht, long long number, PatientInfo * info)
 {
 
     size_t position = number % ht -> hashSize;
 
     if(ht -> bucketTable[position] == NULL)
     {
-        ht -> bucketTable[position] = Bucket_Init(ht -> bucketSize);
+        ht -> bucketTable[position] = Patient_Bucket_Init(ht -> bucketSize);
     }
-    Bucket_Insert(ht -> bucketTable[position], number, info);
+    Patient_Bucket_Insert(ht -> bucketTable[position], number, info);
 }
