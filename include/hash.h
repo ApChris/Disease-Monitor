@@ -14,13 +14,14 @@
 
 typedef struct PatientInfo
 {
-    char * fullName;
-    char * lastName;
-    char * disease;
+    char * recordID;
+    char * patientFirstName;
+    char * patientLastName;
+    char * diseaseID;
     char * country;
 
-    Date * dateEntry;
-    Date * dateExit;
+    Date * entryDate;
+    Date * exitDate;
 }PatientInfo;
 
 typedef struct Patient
@@ -69,7 +70,7 @@ typedef struct Hash
 
 
 // long long Hash_Function_DJB2(unsigned char *str); // This function IS NOT mine, source: djb2 by Dan Bernstein
-Hash * Hash_Init(size_t hashSize, size_t bucketSize);
+Hash * Patient_Hash_Init(size_t hashSize, size_t bucketSize);
 // void Hash_Insert(Hash * ht, long long number, TransactionInfo * info);
 // void Hash_Print(const Hash * ht);
 // void Hash_Deallocate(Hash ** ht,bool remove);
