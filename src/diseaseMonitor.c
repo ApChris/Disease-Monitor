@@ -4,10 +4,9 @@
 	Project 	: Number -> 1 , System Programming 2019-2020
 */
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
-
+#include "../include/hash.h"
+void Print_Input(char * patientRecordsFile, long diseaseHashtableNumOfEntries, long countryHashtableNumOfEntries, long bucketSize);
 
 int main(int argc, char const *argv[])
 {
@@ -19,6 +18,9 @@ int main(int argc, char const *argv[])
     long countryHashtableNumOfEntries;      // Size of country Hash Table
     long bucketSize;                        // Bytes number of hashTable's bucket
     char * patientRecordsFile;              // patientRecordFile
+
+
+    Hash * disease;
 
 
     if (argc != 9)                          // Check if we have !=9 arguments
@@ -51,5 +53,19 @@ int main(int argc, char const *argv[])
       }
     }
 
+    // Print just for feedback
+    Print_Input(patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
+
+    disease = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
+
+    free(patientRecordsFile);
     return 0;
+}
+
+
+void Print_Input(char * patientRecordsFile, long diseaseHashtableNumOfEntries, long countryHashtableNumOfEntries, long bucketSize)
+{
+    printf("\nYour input was:\n\n-> patientRecordsFile = %s\n-> diseaseHashtableNumOfEntries = %ld\n"
+    "-> countryHashtableNumOfEntries = %ld\n-> bucketSize = %ld\n",patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
+
 }
