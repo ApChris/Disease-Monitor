@@ -20,7 +20,7 @@ int main(int argc, char const *argv[])
     char * patientRecordsFile;              // patientRecordFile
 
 
-    Hash * disease;
+    Hash * patientHash;
 
 
     if (argc != 9)                          // Check if we have !=9 arguments
@@ -56,7 +56,28 @@ int main(int argc, char const *argv[])
     // Print just for feedback
     Print_Input(patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
 
-    disease = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
+    patientHash = Patient_Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
+
+
+    Date *dateArg = malloc(sizeof(*dateArg));
+    Date *dateArg1 = malloc(sizeof(*dateArg1));
+    dateArg -> day = 10;
+    dateArg -> month = 5;
+    dateArg -> year = 1996;
+
+    dateArg1 -> day = 12;
+    dateArg1 -> month = 1;
+    dateArg1 -> year = 1995;
+
+
+    PatientInfo * info;
+    info = Patient_PatientInfo_Init("123","Jodi","Carey","COVID-2019","China", dateArg, dateArg1);      // create the transaction
+    Patient_Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info);            // Insert in Sender Hash
+
+
+    Patient_PatientInfo_Print(info);
+
+
 
     free(patientRecordsFile);
     return 0;
