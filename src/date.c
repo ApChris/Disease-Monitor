@@ -45,8 +45,9 @@ long Compare_Date_Time(Date * date,Date * dateArg)
             }
             else // year/month/day is the same
             {
-                printf("\nThe date & time is exactly the same!!\nTherefore I will add 1 minute to new transaction time and ill continue!\n");
+                printf("\nThe date & time is exactly the same!!\n");
             }
         }
     }
+    return 0;
 }
