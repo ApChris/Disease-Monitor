@@ -18,7 +18,7 @@ long long Hash_Function_DJB2(unsigned char *str) // This function IS NOT mine, s
 
 // ----------------------------- PATIENTINFO -----------------------------
 
-PatientInfo * Patient_PatientInfo_Init(const char * recordID, const char * patientFirstName ,const char * patientLastName,const char * diseaseID, const char * country, Date * entryDate, Date * exitDate)
+PatientInfo * PatientInfo_Init(const char * recordID, const char * patientFirstName ,const char * patientLastName,const char * diseaseID, const char * country, Date * entryDate, Date * exitDate)
 {
     PatientInfo * info;
     int char_counter = 0;
@@ -108,13 +108,13 @@ PatientInfo * Patient_PatientInfo_Init(const char * recordID, const char * patie
 }
 
 
-void Patient_PatientInfo_Print(const PatientInfo * info)
+void PatientInfo_Print(const PatientInfo * info)
 {
     printf("%s %s %s %s %s %ld-%ld-%ld %ld-%ld-%ld\n",info -> recordID, info -> patientFirstName, info -> patientLastName,
      info -> diseaseID, info -> country, info -> entryDate -> day, info -> entryDate -> month, info -> entryDate -> year, info -> exitDate -> day, info -> exitDate -> month, info -> exitDate -> year);
 }
 
-void Patient_PatientInfo_Deallocate(PatientInfo ** info)
+void PatientInfo_Deallocate(PatientInfo ** info)
 {
     free((*info) -> recordID);
     free((*info) -> patientFirstName);
@@ -128,18 +128,18 @@ void Patient_PatientInfo_Deallocate(PatientInfo ** info)
     *info = NULL;
 }
 
-Date * Patient_PatientInfo_EntryDate(const PatientInfo * info)
+Date * PatientInfo_EntryDate(const PatientInfo * info)
 {
     return info -> entryDate;
 }
 
-Date * Patient_PatientInfo_ExitDate(const PatientInfo * info)
+Date * PatientInfo_ExitDate(const PatientInfo * info)
 {
     return info -> exitDate;
 }
 
 // ----------------------------- PATIENT -----------------------------
-static Patient * Patient_Patient_Init(size_t size)
+static Patient * Patient_Init(size_t size)
 {
     size_t i = 0;
     Patient * patient = malloc(sizeof(*patient));
@@ -167,7 +167,7 @@ static Patient * Patient_Patient_Init(size_t size)
     return patient;
 }
 
-static void Patient_Patient_Insert(Patient * patient, PatientInfo * info)
+static void Patient_Insert(Patient * patient, PatientInfo * info)
 {
     if( (patient -> length) < (patient -> size) )
     {
@@ -176,17 +176,54 @@ static void Patient_Patient_Insert(Patient * patient, PatientInfo * info)
     }
     else if(patient -> next != NULL)
     {
-        Patient_Patient_Insert(patient->next, info);
+
+        Patient_Insert(patient->next, info);
     }
     else
     {
-        patient -> next = Patient_Patient_Init(patient -> size);
-        Patient_Patient_Insert(patient -> next, info);
+        patient -> next = Patient_Init(patient -> size);
+        Patient_Insert(patient -> next, info);
     }
 }
 
+
+static void Patient_Print(const Patient * patient)
+{
+    size_t i = 0;
+    if( patient == NULL)
+    {
+        return;
+    }
+    while(i < patient -> length)
+    {
+
+        PatientInfo_Print(patient->info[i]);
+        i++;
+    }
+
+    Patient_Print(patient -> next);
+}
+
+
+static void Patient_Deallocate(Patient ** patient,bool remove)
+{
+    size_t i = 0;
+    if(patient != NULL)
+    {
+        if(remove == TRUE)
+        {
+            while(i < (*patient) -> length)
+            {
+                PatientInfo_Deallocate(&(*patient) -> info[i]);
+                i++;
+            }
+        }
+        free((*patient) -> info);
+        *patient = NULL;
+    }
+}
 // ----------------------------- BUCKET NODE -----------------------------
-static BucketNode * Patient_BucketNode_Init(long long number, size_t size)
+static BucketNode * BucketNode_Init(long long number, size_t size)
 {
     BucketNode * bucketnode = malloc(sizeof(*bucketnode));
 
@@ -203,19 +240,35 @@ static BucketNode * Patient_BucketNode_Init(long long number, size_t size)
     return bucketnode;
 }
 
-static void Patient_BucketNode_Insert(BucketNode * bucketnode, PatientInfo * info)
+static void BucketNode_Insert(BucketNode * bucketnode, PatientInfo * info)
 {
     if(bucketnode -> head == NULL)
     {
-        bucketnode -> head = Patient_Patient_Init(bucketnode -> size);
+        bucketnode -> head = Patient_Init(bucketnode -> size);
     }
-    Patient_Patient_Insert(bucketnode -> head, info);
+    Patient_Insert(bucketnode -> head, info);
 
 }
 
 
+static void BucketNode_Deallocate(BucketNode ** bucketnode,bool remove)
+{
+    if(bucketnode != NULL)
+    {
+        Patient * patient = (*bucketnode) -> head;
+        while(patient != NULL)
+        {
+            Patient * tempPatient = patient;
+            patient = patient -> next;
+            Patient_Deallocate(&tempPatient,remove);
+        }
+    }
+    free(*bucketnode);
+    *bucketnode = NULL;
+}
+
 // ----------------------------- BUCKET -----------------------------
-static Bucket * Patient_Bucket_Init(size_t bucketSize)
+static Bucket * Bucket_Init(size_t bucketSize)
 {
     size_t i = 0;
     Bucket * bucket;
@@ -246,42 +299,75 @@ static Bucket * Patient_Bucket_Init(size_t bucketSize)
     return bucket;
 }
 
-static void Patient_Bucket_Insert(Bucket * bucket, long long number, PatientInfo * info)
+static void Bucket_Insert(Bucket * bucket, long long number, PatientInfo * info)
 {
     size_t i = 0;
     while(i < bucket -> length)
     {
         if(bucket -> nodes[i] -> number == number) // If already exists
         {
-            Patient_BucketNode_Insert(bucket -> nodes[i], info);
+            BucketNode_Insert(bucket -> nodes[i], info);
             return;
         }
         i++;
     }
     if(bucket -> next != NULL) // Go to last bucket
     {
-        Patient_Bucket_Insert(bucket -> next, number , info);
+        Bucket_Insert(bucket -> next, number , info);
     }
     else if(bucket -> length < bucket -> size)  // If the number that can hold this bucket is < of the total number of nodes that can hold then
     {
-        bucket -> nodes[bucket->length] = Patient_BucketNode_Init(number, bucket -> size);
-        Patient_BucketNode_Insert(bucket -> nodes[bucket -> length], info);
+        bucket -> nodes[bucket->length] = BucketNode_Init(number, bucket -> size);
+        BucketNode_Insert(bucket -> nodes[bucket -> length], info);
         ++bucket->length;
 
     }
     else // That means that we are at the end of buckets and we are going to create a new bucket because the last entry can't be put in previous last bucket
     {
 
-        bucket -> next = Patient_Bucket_Init(bucket -> size);
-        Patient_Bucket_Insert(bucket -> next, number, info);
+        bucket -> next = Bucket_Init(bucket -> size);
+        Bucket_Insert(bucket -> next, number, info);
     }
 
 }
 
 
+static void Bucket_Print(const Bucket * bucket)
+{
+    size_t i = 0;
+    if(bucket == NULL)
+    {
+        return;
+    }
+    while(i < bucket -> length)
+    {
+        Patient_Print(bucket -> nodes[i] -> head);
+
+        i++;
+    }
+    Bucket_Print(bucket -> next);
+}
+
+static void Bucket_Deallocate(Bucket ** bucket, bool remove)
+{
+    size_t i = 0;
+    if(bucket != NULL)
+    {
+        while(i < (*bucket)->length)
+        {
+            BucketNode_Deallocate(&(*bucket)->nodes[i],remove);
+            i++;
+        }
+        free((*bucket)->nodes);
+    }
+    free(*bucket);
+    *bucket = NULL;
+}
+
+
 // ----------------------------- HASH -----------------------------------------
 
-Hash * Patient_Hash_Init(size_t hashSize, size_t bucketSize)
+Hash * Hash_Init(size_t hashSize, size_t bucketSize)
 {
     size_t i = 0;                                        // init a counter for buckettable
 
@@ -319,14 +405,47 @@ Hash * Patient_Hash_Init(size_t hashSize, size_t bucketSize)
 
 
 
-void Patient_Hash_Insert(Hash * ht, long long number, PatientInfo * info)
+void Hash_Insert(Hash * ht, long long number, PatientInfo * info)
 {
 
     size_t position = number % ht -> hashSize;
 
     if(ht -> bucketTable[position] == NULL)
     {
-        ht -> bucketTable[position] = Patient_Bucket_Init(ht -> bucketSize);
+        ht -> bucketTable[position] = Bucket_Init(ht -> bucketSize);
     }
-    Patient_Bucket_Insert(ht -> bucketTable[position], number, info);
+    Bucket_Insert(ht -> bucketTable[position], number, info);
+}
+
+
+void Hash_Print(const Hash * ht)
+{
+    size_t i = 0;
+    while(i < ht -> hashSize)
+    {
+        printf("Position %zu:\n", i);
+        Bucket_Print(ht -> bucketTable[i]);
+        printf("\n");
+        i++;
+    }
+}
+
+
+void Hash_Deallocate(Hash ** ht,bool remove)
+{
+    size_t i = 0;
+    while(i < (*ht) -> hashSize)
+    {
+        Bucket * bucket = (*ht) -> bucketTable[i];
+        while(bucket != NULL)
+        {
+            Bucket * tempBucket = bucket;
+            bucket = bucket -> next;
+            Bucket_Deallocate(&tempBucket,remove);
+        }
+        i++;
+    }
+    free((*ht) -> bucketTable);
+    free(*ht);
+    *ht = NULL;
 }
