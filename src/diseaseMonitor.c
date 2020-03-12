@@ -10,8 +10,8 @@ void Print_Input(char * patientRecordsFile, long diseaseHashtableNumOfEntries, l
 
 int main(int argc, char const *argv[])
 {
-    long result;                            // A variable to hold values from functions returns
-    long error;                             // A variable that works as error flag
+    // long result;                            // A variable to hold values from functions returns
+    // long error;                             // A variable that works as error flag
 
 
     long diseaseHashtableNumOfEntries;      // Size of disease Hash Table
@@ -56,7 +56,7 @@ int main(int argc, char const *argv[])
     // Print just for feedback
     Print_Input(patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
 
-    patientHash = Patient_Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
+    patientHash = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
 
 
     Date *dateArg = malloc(sizeof(*dateArg));
@@ -71,14 +71,18 @@ int main(int argc, char const *argv[])
 
 
     PatientInfo * info;
-    info = Patient_PatientInfo_Init("123","Jodi","Carey","COVID-2019","China", dateArg, dateArg1);      // create the transaction
-    Patient_Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info);            // Insert in Sender Hash
+    info = PatientInfo_Init("123","Jodi","Carey","COVID-2019","China", dateArg, dateArg1);      // create the
+    Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info);            // Insert in  Hash
 
+    // info = PatientInfo_Init("53","Michael","Crawford","MERS-COV","USA", dateArg, dateArg1);      // create the
+    // Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"MERS-COV"),info);            // Insert in  Hash
 
-    Patient_PatientInfo_Print(info);
+    // Hash_Print(patientHash);
 
-
-
+    free(dateArg);
+    free(dateArg1);
+    Hash_Deallocate(&patientHash,true);
+    // Patient_PatientInfo_Deallocate(&info);
     free(patientRecordsFile);
     return 0;
 }
