@@ -61,19 +61,18 @@ typedef struct Hash
 
 
 
+PatientInfo * PatientInfo_Init(const char * recordID, const char * patientFirstName ,const char * patientLastName,const char * diseaseID, const char * country, Date * entryDate, Date * exitDate);
+void PatientInfo_Print(const PatientInfo * info);
+void PatientInfo_Deallocate(PatientInfo ** info);
+Date * PatientInfo_EntryDate(const PatientInfo * info);
+Date * PatientInfo_ExitDate(const PatientInfo * info);
 
-// TransactionInfo * TransactionInfo_Init(const char * transactionID,const char * senderWalletID,const char * receiverWalletID,long value,Date * date,Time * time);
-// void TransactionInfo_Deallocate(TransactionInfo ** info);
-// void TransactionInfo_Print(const TransactionInfo * info);
-// Date * TransactionInfo_Date(const TransactionInfo * info);
-// Time * TransactionInfo_Time(const TransactionInfo * info);
 
-
-// long long Hash_Function_DJB2(unsigned char *str); // This function IS NOT mine, source: djb2 by Dan Bernstein
-Hash * Patient_Hash_Init(size_t hashSize, size_t bucketSize);
-// void Hash_Insert(Hash * ht, long long number, TransactionInfo * info);
-// void Hash_Print(const Hash * ht);
-// void Hash_Deallocate(Hash ** ht,bool remove);
+long long Hash_Function_DJB2(unsigned char *str); // This function IS NOT mine, source: djb2 by Dan Bernstein
+Hash * Hash_Init(size_t hashSize, size_t bucketSize);
+void Hash_Insert(Hash * ht, long long number, PatientInfo * info);
+void Hash_Print(const Hash * ht);
+void Hash_Deallocate(Hash ** ht,bool remove);
 // void Hash_Bye(Hash * ht,bool remove);
 // long Hash_Compare_Dates_Times(const Hash * ht,long long number, Date * date1,Date * date2, Time * time1, Time *time2,long flag);
 
