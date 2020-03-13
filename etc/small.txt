@@ -1,11 +1,14 @@
+889 Mary Smith COVID-2019 China 25-1-2019 27-1-2019
+776 Larry Jones SARS-1 Italy 10-02-2003 -
+125 Jon Dupont H1N1 USA 12-02-2016 15-02-2016
 26 Jodi Carey COVID-2019 China 14-12-2007 07-01-2019
 53 Michael Crawford MERS-COV USA 22-06-2003 09-12-2015
 70 Cheryl Simon COVID-2019 Australia 18-08-2007 11-02-2014
-76 Deborah Sims DVM H1N1 Brazil 08-07-2007 05-06-2013
+76 Deborah Sims DVM-H1N1 Brazil 08-07-2007 05-06-2013
 93 Charles Rodriguez SARS-COV-2 Egypt 16-11-2017 29-01-2018
 37 Mr. Kyle Rodriguez SARS-COV-2 Argentina 07-07-2006 20-06-2008
 87 Laura Henderson EVD Germany 01-11-2006 29-09-2013
-71 Michelle White DVM COVID-2019 China 20-10-2004 -
+71 Michelle White DVM-COVID-2019 China 20-10-2004 -
 63 Jessica House MERS-COV Australia 03-07-2001 16-02-2006
 7 Paul Parker SARS-1 Russia 26-03-2004 01-04-2008
 99 Gregory Newton COVID-2019 Russia 01-08-2013 14-09-2019
@@ -72,7 +75,7 @@
 21 Susan James EVD Brazil 03-02-2001 28-02-2019
 19 Stacy Stone EVD USA 08-03-2004 03-10-2015
 34 Christine Brown SARS-COV-2 USA 26-05-2000 07-07-2016
-12 Taylor Wagner DVM H1N1 Vietnam 07-10-2015 05-12-2015
+12 Taylor Wagner DVM-H1N1 Vietnam 07-10-2015 05-12-2015
 94 Allen Moore MERS-COV Turkey 20-07-2014 01-04-2019
 85 Meghan Brown COVID-2019 Vietnam 21-04-2003 28-09-2011
 72 Steven Sanders MERS-COV Switzerland 14-04-2001 07-09-2018
