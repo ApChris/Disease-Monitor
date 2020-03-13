@@ -1,101 +1,127 @@
+#include "../include/input.h"
 
-
-long ReadFile_(const char * patientRecordsFile, Hash * patientHash)
+long ReadFile(const char * patientRecordsFile, Hash * patientHash)
 {
-
-    char line[255];
-    PatientInfo * info;
-    char * recordID
-    char * patientFirstName;
-    char * patientLastName;
-    char * diseaseID;
-    char * country;
-    long value;
-
-    long day,month,year;
-
-    Date * date;
-    Time * time;
-    date = malloc(sizeof(*date));
-    time = malloc(sizeof(*time));
-
-    char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$";
-    char * tok;
-
+    // for getline
+    char * line = NULL;
+    size_t length = 0;
+    long read;
     FILE * file;
-    file = fopen(fileName, "r");
-    printf("%s has been opened successfully!!\n\n", fileName); // Feedback
 
 
+    // variables that I read from file
+    char * recordID = NULL;
+    char * patientFirstName = NULL;
+    char * patientLastName = NULL;
+    char * diseaseID = NULL;
+    char * country = NULL;
+    Date * entryDate = NULL;
+    Date * exitDate = NULL;
+
+    // for strtok
+    char delimiters[] = " \n\t\r\v\f\n:,/.><[]{}|=+*@#$-";
+    char * tok = NULL;
+
+    // The struct that we are going to fill
+    PatientInfo * info = NULL;
+
+    // extra variables
+    size_t i = 0;
     long result;
-    tID = 0;
-    while(fgets(line,sizeof(line), file))
+
+    entryDate = malloc(sizeof(*entryDate));
+    exitDate = malloc(sizeof(*exitDate));
+    file = fopen(patientRecordsFile, "r");
+    printf("%s has been opened successfully!!\n\n", patientRecordsFile); // Feedback
+
+
+    while((read = getline(&line,&length, file)) != -1)
     {
-
-        // Read next token
-        tok = strtok(line, delimiters);
-
-        // Get transactionID
+        // printf("%ld ",i++);
+        // Get recordID
+        tok = strtok(line, " ");
         recordID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(recordID,(const char *)tok);
-        recordID[1 + sizeof(char) * strlen(tok)] = '\0';
+        // recordID[1 + sizeof(char) * strlen(tok)] = '\0';
 
-        // Read next token
-        tok = strtok(NULL,delimiters);
-
-        // Get senderWalletID
+        // Read patientFirstName
+        tok = strtok(NULL," ");
         patientFirstName = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(patientFirstName,(const  char *)tok);
-        patientFirstName[1 + sizeof(char) * strlen(tok)] = '\0';
+        // patientFirstName[1 + sizeof(char) * strlen(tok)] = '\0';
 
-        // Read next token
-        tok = strtok(NULL,delimiters);
-
-        // Get receivWalletID
+        // Read patientLastName
+        tok = strtok(NULL," ");
         patientLastName = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(patientLastName,(const  char *)tok);
-        patientLastName[1 + sizeof(char) * strlen(tok)] = '\0';
+        // patientLastName[1 + sizeof(char) * strlen(tok)] = '\0';
 
-        // Read next token
-        tok = strtok(NULL,delimiters);
-
-        // Get receivWalletID
+        // Read diseaseID
+        tok = strtok(NULL," ");
         diseaseID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(diseaseID,(const  char *)tok);
-        diseaseID[1 + sizeof(char) * strlen(tok)] = '\0';
+        // diseaseID[1 + sizeof(char) * strlen(tok)] = '\0';
+
+        // Read country
+        tok = strtok(NULL," ");
+        country = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+        strcpy(country,(const  char *)tok);
+        // country[1 + sizeof(char) * strlen(tok)] = '\0';
 
 
-        // Read next token
+        // read entryDate
+        tok = strtok(NULL,delimiters);
+        entryDate -> day = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        entryDate -> month = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        entryDate -> year = (long)atoi(tok);
+
+        // read ExitDate
         tok = strtok(NULL,delimiters);
 
+        // if current patient doessn't
+        if(tok == NULL)
+        {
+            printf("%s %s %s %s %s %ld-%ld-%ld -\n",recordID, patientFirstName, patientLastName,
+             diseaseID, country, entryDate -> day, entryDate -> month, entryDate -> year);
+            free(recordID);
+            free(patientFirstName);
+            free(patientLastName);
+            free(diseaseID);
+            free(country);
+            continue;
+        }
 
-        value = (long)atoi(tok);                     // Get value
+        exitDate -> day = (long)atoi(tok);
+
         tok = strtok(NULL,delimiters);
+        exitDate -> month = (long)atoi(tok);
 
-        day = (long)atoi(tok);                       // Get day
         tok = strtok(NULL,delimiters);
+        exitDate -> year = (long)atoi(tok);
 
-        month = (long)atoi(tok);                     // Get month
-        tok = strtok(NULL,delimiters);
+        printf("%s %s %s %s %s %ld-%ld-%ld %ld-%ld-%ld\n",recordID, patientFirstName, patientLastName,
+         diseaseID, country, entryDate -> day, entryDate -> month, entryDate -> year, exitDate -> day, exitDate -> month, exitDate -> year);
+        free(recordID);
+        free(patientFirstName);
+        free(patientLastName);
+        free(diseaseID);
+        free(country);
 
-        year = (long)atoi(tok);                      // Get year
-        tok = strtok(NULL,delimiters);
-
-        hours = (long)atoi(tok);                     // Get hours
-        tok = strtok(NULL,delimiters);
-
-        minutes = (long)atoi(tok);                  // Get minutes
-        tok = strtok(NULL,delimiters);
-
-        // Date & Time
-        date -> day = day;
-        date -> month = month;
-        date -> year = year;
-
-        time -> hours = hours;
-        time -> minutes = minutes;
-
-
+    }
+    free(entryDate);
+    free(exitDate);
+    free(line);
     fclose(file);
-    printf("\n\n%s has been closed successfully!!\n", fileName); // Feedback
+    printf("\n\n%s has been closed successfully!!\n", patientRecordsFile); // Feedback
+}
+
+void Print_Input(char * patientRecordsFile, long diseaseHashtableNumOfEntries, long countryHashtableNumOfEntries, long bucketSize)
+{
+    printf("\nYour input was:\n\n-> patientRecordsFile = %s\n-> diseaseHashtableNumOfEntries = %ld\n"
+    "-> countryHashtableNumOfEntries = %ld\n-> bucketSize = %ld\n",patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
+
 }
