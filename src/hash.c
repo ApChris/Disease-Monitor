@@ -37,7 +37,7 @@ PatientInfo * PatientInfo_Init(const char * recordID, const char * patientFirstN
         exit(EXIT_FAILURE);
     }
     strcpy(info -> recordID,recordID);
-    info -> recordID[char_counter] = '\0';
+    // info -> recordID[char_counter] = '\0';
 
 
     // patientFirstName
@@ -48,7 +48,7 @@ PatientInfo * PatientInfo_Init(const char * recordID, const char * patientFirstN
         exit(EXIT_FAILURE);
     }
     strcpy(info -> patientFirstName,patientFirstName);
-    info -> patientFirstName[char_counter] = '\0';
+    // info -> patientFirstName[char_counter] = '\0';
 
 
     // patientLastName
@@ -59,7 +59,7 @@ PatientInfo * PatientInfo_Init(const char * recordID, const char * patientFirstN
         exit(EXIT_FAILURE);
     }
     strcpy(info -> patientLastName,patientLastName);
-    info -> patientLastName[char_counter] = '\0';
+    // info -> patientLastName[char_counter] = '\0';
 
 
     // diseaseID
@@ -70,7 +70,7 @@ PatientInfo * PatientInfo_Init(const char * recordID, const char * patientFirstN
         exit(EXIT_FAILURE);
     }
     strcpy(info -> diseaseID,diseaseID);
-    info -> diseaseID[char_counter] = '\0';
+    // info -> diseaseID[char_counter] = '\0';
 
     // country
     char_counter = strlen(country) + 1;
@@ -80,7 +80,7 @@ PatientInfo * PatientInfo_Init(const char * recordID, const char * patientFirstN
         exit(EXIT_FAILURE);
     }
     strcpy(info -> country,country);
-    info -> country[char_counter] = '\0';
+    // info -> country[char_counter] = '\0';
 
 
     // entryDate
@@ -110,8 +110,14 @@ PatientInfo * PatientInfo_Init(const char * recordID, const char * patientFirstN
 
 void PatientInfo_Print(const PatientInfo * info)
 {
-    printf("%s %s %s %s %s %ld-%ld-%ld %ld-%ld-%ld\n",info -> recordID, info -> patientFirstName, info -> patientLastName,
-     info -> diseaseID, info -> country, info -> entryDate -> day, info -> entryDate -> month, info -> entryDate -> year, info -> exitDate -> day, info -> exitDate -> month, info -> exitDate -> year);
+    if(info -> exitDate -> day == TAG)
+    {
+        printf("%s %s %s %s %s %ld-%ld-%ld -\n",info -> recordID, info -> patientFirstName, info -> patientLastName,info -> diseaseID, info -> country, info -> entryDate -> day, info -> entryDate -> month, info -> entryDate -> year);
+    }
+    else
+    {
+        printf("%s %s %s %s %s %ld-%ld-%ld %ld-%ld-%ld\n",info -> recordID, info -> patientFirstName, info -> patientLastName,info -> diseaseID, info -> country, info -> entryDate -> day, info -> entryDate -> month, info -> entryDate -> year, info -> exitDate -> day, info -> exitDate -> month, info -> exitDate -> year);
+    }
 }
 
 void PatientInfo_Deallocate(PatientInfo ** info)
