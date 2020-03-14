@@ -10,6 +10,7 @@
 
 #define TRUE 1
 #define FALSE 0
+#define TAG 1400322
 
 
 typedef struct PatientInfo
