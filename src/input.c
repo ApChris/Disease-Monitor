@@ -23,7 +23,7 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash)
     char * tok = NULL;
 
     // The struct that we are going to fill
-    PatientInfo * info = NULL;
+    //PatientInfo * info = NULL;
 
     // extra variables
     size_t i = 0;
@@ -31,12 +31,15 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash)
 
     entryDate = malloc(sizeof(*entryDate));
     exitDate = malloc(sizeof(*exitDate));
+
+
+
     file = fopen(patientRecordsFile, "r");
     printf("%s has been opened successfully!!\n\n", patientRecordsFile); // Feedback
 
-
     while((read = getline(&line,&length, file)) != -1)
     {
+        PatientInfo * info = NULL;
         // printf("%ld ",i++);
         // Get recordID
         tok = strtok(line, " ");
@@ -85,13 +88,16 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash)
         // if current patient doessn't
         if(tok == NULL)
         {
-            printf("%s %s %s %s %s %ld-%ld-%ld -\n",recordID, patientFirstName, patientLastName,
-             diseaseID, country, entryDate -> day, entryDate -> month, entryDate -> year);
+            // Flag to fix the print function
+            exitDate -> day = TAG;
+            info = PatientInfo_Init(recordID,patientFirstName,patientLastName,diseaseID,country, entryDate, exitDate);      // create the
+            Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)diseaseID),info);
             free(recordID);
             free(patientFirstName);
             free(patientLastName);
             free(diseaseID);
             free(country);
+
             continue;
         }
 
@@ -103,13 +109,14 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash)
         tok = strtok(NULL,delimiters);
         exitDate -> year = (long)atoi(tok);
 
-        printf("%s %s %s %s %s %ld-%ld-%ld %ld-%ld-%ld\n",recordID, patientFirstName, patientLastName,
-         diseaseID, country, entryDate -> day, entryDate -> month, entryDate -> year, exitDate -> day, exitDate -> month, exitDate -> year);
+        info = PatientInfo_Init(recordID,patientFirstName,patientLastName,diseaseID,country, entryDate, exitDate);      // create the
+        Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)diseaseID),info);
         free(recordID);
         free(patientFirstName);
         free(patientLastName);
         free(diseaseID);
         free(country);
+
 
     }
     free(entryDate);
