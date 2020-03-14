@@ -1,7 +1,9 @@
 OBJS = 	build/diseaseMonitor.o \
 		build/date.o \
 		build/hash.o \
-		build/input.o
+		build/input.o \
+		build/bst.o \
+		build/hashDC.o
 		#build/unit_testing.o
 
 
@@ -30,6 +32,12 @@ build/hash.o: src/hash.c
 	$(CC) $(FLAGS) $< -o $@
 
 build/input.o: src/input.c
+	$(CC) $(FLAGS) $< -o $@
+
+build/bst.o: src/bst.c
+	$(CC) $(FLAGS) $< -o $@
+
+build/hashDC.o: src/hashDC.c
 	$(CC) $(FLAGS) $< -o $@
 #build/unit_testing.o: unit_testing.c
 #	$(CC) $(FLAGS) $< -o $@ $(CUNIT_FLAG)
