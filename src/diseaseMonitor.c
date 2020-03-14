@@ -6,18 +6,18 @@
 #include <stdio.h>
 
 #include "../include/hash.h"
-void Print_Input(char * patientRecordsFile, long diseaseHashtableNumOfEntries, long countryHashtableNumOfEntries, long bucketSize);
+#include "../include/input.h"
 
 int main(int argc, char const *argv[])
 {
-    // long result;                            // A variable to hold values from functions returns
+    long result;                            // A variable to hold values from functions returns
     // long error;                             // A variable that works as error flag
 
 
     long diseaseHashtableNumOfEntries;      // Size of disease Hash Table
     long countryHashtableNumOfEntries;      // Size of country Hash Table
     long bucketSize;                        // Bytes number of hashTable's bucket
-    char * patientRecordsFile;              // patientRecordFile
+    char * patientRecordsFile = NULL;              // patientRecordFile
 
 
     Hash * patientHash;
@@ -59,38 +59,21 @@ int main(int argc, char const *argv[])
     patientHash = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
 
 
-    Date *dateArg = malloc(sizeof(*dateArg));
-    Date *dateArg1 = malloc(sizeof(*dateArg1));
-    dateArg -> day = 10;
-    dateArg -> month = 5;
-    dateArg -> year = 1996;
 
-    dateArg1 -> day = 12;
-    dateArg1 -> month = 1;
-    dateArg1 -> year = 1995;
-
-
-    PatientInfo * info;
-    info = PatientInfo_Init("123","Jodi","Carey","COVID-2019","China", dateArg, dateArg1);      // create the
-    Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info);            // Insert in  Hash
+    // PatientInfo * info;
+    // info = PatientInfo_Init("123","Jodi","Carey","COVID-2019","China", dateArg, dateArg1);      // create the
+    // Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info);            // Insert in  Hash
 
     // info = PatientInfo_Init("53","Michael","Crawford","MERS-COV","USA", dateArg, dateArg1);      // create the
     // Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"MERS-COV"),info);            // Insert in  Hash
 
     // Hash_Print(patientHash);
 
-    free(dateArg);
-    free(dateArg1);
+    result = ReadFile(patientRecordsFile, patientHash);
+    Hash_Print(patientHash);
+
     Hash_Deallocate(&patientHash,true);
     // Patient_PatientInfo_Deallocate(&info);
     free(patientRecordsFile);
     return 0;
-}
-
-
-void Print_Input(char * patientRecordsFile, long diseaseHashtableNumOfEntries, long countryHashtableNumOfEntries, long bucketSize)
-{
-    printf("\nYour input was:\n\n-> patientRecordsFile = %s\n-> diseaseHashtableNumOfEntries = %ld\n"
-    "-> countryHashtableNumOfEntries = %ld\n-> bucketSize = %ld\n",patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
-
 }
