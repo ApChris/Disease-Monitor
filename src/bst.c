@@ -14,12 +14,12 @@
 Node * CreateNode(Date * entryDate)
 {
     Node * node;
-    if((node = (Node *)malloc(sizeof(Node)) == NULL))
+    if( (node = (Node *)malloc(sizeof(Node))) == NULL)
     {
         perror("Error(CreateNode): ");
         exit(EXIT_FAILURE);
     }
-    if((node -> entryDate = (Date *)malloc(sizeof(Date))) == NULL)
+    if( (node -> entryDate = (Date *)malloc(sizeof(Date))) == NULL)
     {
         perror("Error(CreateNode): ");
         exit(EXIT_FAILURE);
@@ -32,7 +32,8 @@ Node * CreateNode(Date * entryDate)
 
 BST * CreateBST()
 {
-    if((bst = (BST *)malloc(sizeof(BST)) == NULL))
+    BST * bst;
+    if(((bst = (BST *)malloc(sizeof(BST))) == NULL))
     {
         perror("Error(CreateBST): ");
         exit(EXIT_FAILURE);
@@ -51,9 +52,9 @@ void inorder(Node * node)
     }
 }
 
-Node * PushBST(Node * node,Date * entryDate)
+Node * PushBST(Node * node, Date * entryDate)
 {
-    Node * newNode = CreateNode(data);
+    Node * newNode = CreateNode(entryDate);
     if(node == NULL)
     {
         node = newNode;
@@ -61,7 +62,7 @@ Node * PushBST(Node * node,Date * entryDate)
     }
 
 
-    if(Compare_Date_Time(entryDate, node -> entryDate))
+    if(Compare_Date(entryDate, node -> entryDate) == -1)
     {
         node -> left = PushBST(node -> left, entryDate);
     }
@@ -91,12 +92,12 @@ Node * DeleteNode(Node * node, Date * entryDate)
     {
         return node;
     }
-
-    if(data < node -> data)
+    long result = Compare_Date(entryDate, node -> entryDate);
+    if(result == -1)
     {
         node -> left = DeleteNode(node -> left, entryDate);
     }
-    else if(data > node -> data)
+    else if(result == 1)
     {
         node -> right = DeleteNode(node -> right, entryDate);
     }
@@ -116,7 +117,7 @@ Node * DeleteNode(Node * node, Date * entryDate)
         }
 
         Node * tmp = minvNode(node -> right);
-        node -> data = tmp -> data;
+        node -> entryDate = tmp -> entryDate;
 
         node -> right = DeleteNode(node -> right, node -> entryDate);
 
@@ -124,40 +125,40 @@ Node * DeleteNode(Node * node, Date * entryDate)
     return node;
 }
 
-
-long SearchBST(BST * root, Date * entryDate)
-{
-    BST * tempNode;
-    tempNode = root;
-    while(tempNode != NULL)
-    {
-        if(tempNode -> entryDate == entryDate)
-        {
-            printf("\n%ld has been found!!\n",tempNode -> entryDate -> day);
-            return 1;
-        }
-
-        if(Compare_Date_Time(entryDate, tempNode -> entryDate))
-        {
-            tempNode = tempNode -> left;
-        }
-        else
-        {
-            tempNode = tempNode -> right;
-        }
-    }
-    return 0;
-
-}
-
-
-void DeallocateBST(BST * temp)
-{
-    if(temp != NULL)
-    {
-        free(temp);
-
-        BST_Deallocate_Preorder(temp -> left);
-        BST_Deallocate_Preorder(temp -> right);
-    }
-}
+//
+// long SearchBST(BST * root, Date * entryDate)
+// {
+//     BST * tempNode;
+//     tempNode = root;
+//     while(tempNode != NULL)
+//     {
+//         if(tempNode -> entryDate == entryDate)
+//         {
+//             printf("\n%ld has been found!!\n",tempNode -> entryDate -> day);
+//             return 1;
+//         }
+//
+//         if(Compare_Date_Time(entryDate, tempNode -> entryDate))
+//         {
+//             tempNode = tempNode -> left;
+//         }
+//         else
+//         {
+//             tempNode = tempNode -> right;
+//         }
+//     }
+//     return 0;
+//
+// }
+//
+//
+// void DeallocateBST(BST * temp)
+// {
+//     if(temp != NULL)
+//     {
+//         free(temp);
+//
+//         BST_Deallocate_Preorder(temp -> left);
+//         BST_Deallocate_Preorder(temp -> right);
+//     }
+// }
