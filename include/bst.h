@@ -1,6 +1,8 @@
 #ifndef __BST_H_
 #define __BST_H_
 
+#include "date.h"
+
 typedef struct Node
 {
     Date * entryDate;
@@ -19,5 +21,5 @@ Node * PushBST(Node * node, Date * entryDate);
 void inorder(Node * node);
 Node * DeleteNode(Node * node, Date * entryDate);
 long SearchBST(BST * root,Date * entryDate);
-void DeallocateBST(BST * temp)
+void DeallocateBST(BST * temp);
 #endif
