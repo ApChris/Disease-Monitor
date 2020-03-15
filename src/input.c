@@ -26,7 +26,6 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash)
     //PatientInfo * info = NULL;
 
     // extra variables
-    size_t i = 0;
     long result;
 
     entryDate = malloc(sizeof(*entryDate));
