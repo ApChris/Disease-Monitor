@@ -1,5 +1,5 @@
-#ifndef _HASHTABLE_H_
-#define _HASHTABLE_H_
+#ifndef _HASHDC_H_
+#define _HASHDC_H_
 #include <stdio.h>
 #include <stdbool.h>
 #include <errno.h>
@@ -18,7 +18,7 @@ typedef struct BucketNode_DC
 {
     size_t size;
     long long number;
-    char * WalletID;
+    char * dc_name;
     BST * bst;
 }BucketNode_DC;
 
@@ -37,3 +37,5 @@ typedef struct Hash_DC
     size_t bucketSize;
     Bucket_DC ** bucketTable;
 }Hash_DC;
+
+#endif
