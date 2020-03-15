@@ -7,6 +7,7 @@
 
 #include "../include/hash.h"
 #include "../include/input.h"
+#include "../include/bst.h"
 
 int main(int argc, char const *argv[])
 {
@@ -56,10 +57,60 @@ int main(int argc, char const *argv[])
     // Print just for feedback
     Print_Input(patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
 
-    patientHash = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
+    // patientHash = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
+    Date * date1 = (Date *)malloc(sizeof(Date));
+    Date * date2 = (Date *)malloc(sizeof(Date));
+    Date * date3 = (Date *)malloc(sizeof(Date));
+    Date * date4 = (Date *)malloc(sizeof(Date));
+    Date * date5 = (Date *)malloc(sizeof(Date));
+
+    date1 -> day = 11;
+    date1 -> month = 11;
+    date1 -> year = 2011;
+
+    date2 -> day = 10;
+    date2 -> month = 12;
+    date2 -> year = 2012;
+
+    date3 -> day = 1;
+    date3 -> month = 1;
+    date3 -> year = 2021;
+
+    date4 -> day = 9;
+    date4 -> month = 9;
+    date4 -> year = 2011;
+
+    date5 -> day = 9;
+    date5 -> month = 12;
+    date5 -> year = 2012;
+
+    result = Compare_Date(date1,date2);
+    printf("Result = %ld\n",result);
 
 
+    BST * bst = CreateBST();
+    bst -> root = PushBST(bst -> root, date1);
+    PushBST(bst -> root, date2);
+    PushBST(bst -> root, date3);
+    PushBST(bst -> root, date4);
+    PushBST(bst -> root, date5);
 
+
+    inorder(bst -> root);
+
+
+    DeleteNode(bst -> root, date1);
+    DeleteNode(bst -> root, date2);
+    DeleteNode(bst -> root, date3);
+    DeleteNode(bst -> root, date4);
+    DeleteNode(bst -> root, date5);
+
+    free(date1);
+    free(date2);
+    free(date3);
+    free(date4);
+    free(date5);
+    free(bst);
     // PatientInfo * info;
     // info = PatientInfo_Init("123","Jodi","Carey","COVID-2019","China", dateArg, dateArg1);      // create the
     // Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info);            // Insert in  Hash
@@ -69,10 +120,10 @@ int main(int argc, char const *argv[])
 
     // Hash_Print(patientHash);
 
-    result = ReadFile(patientRecordsFile, patientHash);
-    Hash_Print(patientHash);
+    // result = ReadFile(patientRecordsFile, patientHash);
+    // Hash_Print(patientHash);
 
-    Hash_Deallocate(&patientHash,true);
+    // Hash_Deallocate(&patientHash,true);
     // Patient_PatientInfo_Deallocate(&info);
     free(patientRecordsFile);
     return 0;
