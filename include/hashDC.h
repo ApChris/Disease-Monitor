@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "date.h"
+// #include "date.h"
 #include "bst.h"
-
+#include "hash.h"
 #define TRUE 1
 #define FALSE 0
 #define TAG 1400322
@@ -20,6 +20,7 @@ typedef struct BucketNode_DC
     long long number;
     char * dc_name;
     BST * bst;
+    
 }BucketNode_DC;
 
 typedef struct Bucket_DC
@@ -39,3 +40,6 @@ typedef struct Hash_DC
 }Hash_DC;
 
 #endif
+
+Hash_DC * Hash_DC_Init(size_t hashSize, size_t bucketSize);
+void Hash_DC_Insert(Hash_DC * ht, long long number, const char * dc_name, Date * entryDate, PatientInfo * info);
