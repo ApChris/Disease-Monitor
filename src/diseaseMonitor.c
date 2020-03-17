@@ -8,6 +8,7 @@
 #include "../include/hash.h"
 #include "../include/input.h"
 #include "../include/bst.h"
+#include "../include/hashDC.h"
 
 int main(int argc, char const *argv[])
 {
@@ -57,7 +58,8 @@ int main(int argc, char const *argv[])
     // Print just for feedback
     Print_Input(patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
 
-    // patientHash = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
+    patientHash = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
+    // PatientInfo * info;
     Date * date1 = (Date *)malloc(sizeof(Date));
     Date * date2 = (Date *)malloc(sizeof(Date));
     Date * date3 = (Date *)malloc(sizeof(Date));
@@ -88,29 +90,43 @@ int main(int argc, char const *argv[])
     printf("Result = %ld\n",result);
 
 
-    BST * bst = CreateBST();
-    bst -> root = PushBST(bst -> root, date1);
-    PushBST(bst -> root, date2);
-    PushBST(bst -> root, date3);
-    PushBST(bst -> root, date4);
-    PushBST(bst -> root, date5);
 
 
-    inorder(bst -> root);
+
+    printf("-------  TESTING AREA ---------\n");
+    // PatientInfo * info = PatientInfo_Init("123","Jodi","Carey","COVID-2019","China", date1, date2);      // create the
+    // Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info);
+    //
+    // PatientInfo * info2 = PatientInfo_Init("32","Roman","Reigns","COVID-2019","USA", date3, date4);      // create the
+    // Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info2);
+
+    // BST * bst = CreateBST();
+    // bst -> root = PushBST(bst -> root, date1, info);
+    // PushBST(bst -> root, date2,info2);
+    // inorder(bst -> root);
+
+    // PushBST(bst -> root, date3);
+    // PushBST(bst -> root, date4);
+    // PushBST(bst -> root, date5);
 
 
-    DeleteNode(bst -> root, date1);
-    DeleteNode(bst -> root, date2);
-    DeleteNode(bst -> root, date3);
-    DeleteNode(bst -> root, date4);
-    DeleteNode(bst -> root, date5);
+    Hash_DC * diseaseHash = Hash_DC_Init(diseaseHashtableNumOfEntries, bucketSize);
+    Hash_DC * countryHash = Hash_DC_Init(countryHashtableNumOfEntries, bucketSize);
+    // Hash_DC_Insert(diseaseHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"), "COVID-2019", date1, info);
+    // Hash_DC_Insert(diseaseHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"), "COVID-2019", date3, info2);
+    // // Hash_DC_Insert(Hash_DC * ht, number, dc_name, entryDate, info);
+    // Hash_DC_Print(diseaseHash);
+    // inorder(diseaseHash -> bucketTable[2] -> nodes[0] -> bst -> root);
+    // // PatientInfo_Print(diseaseHash -> bucketTable[2] -> nodes[0] -> bst -> root -> info);
+    printf("-------------------------------\n");
 
-    free(date1);
-    free(date2);
-    free(date3);
-    free(date4);
-    free(date5);
-    free(bst);
+
+    // free(date1);
+    // free(date2);
+    // free(date3);
+    // free(date4);
+    // free(date5);
+    // free(bst);
     // PatientInfo * info;
     // info = PatientInfo_Init("123","Jodi","Carey","COVID-2019","China", dateArg, dateArg1);      // create the
     // Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)"COVID-2019"),info);            // Insert in  Hash
@@ -120,10 +136,13 @@ int main(int argc, char const *argv[])
 
     // Hash_Print(patientHash);
 
-    // result = ReadFile(patientRecordsFile, patientHash);
+    result = ReadFile(patientRecordsFile, patientHash, diseaseHash, countryHash);
     // Hash_Print(patientHash);
-
+    Hash_DC_Print(diseaseHash);
+    inorder(diseaseHash -> bucketTable[2] -> nodes[0] -> bst -> root);
     // Hash_Deallocate(&patientHash,true);
+    Hash_DC_Print(countryHash);
+    inorder(countryHash -> bucketTable[2] -> nodes[1] -> bst -> root);
     // Patient_PatientInfo_Deallocate(&info);
     free(patientRecordsFile);
     return 0;
