@@ -66,7 +66,7 @@
 2 Brandon White FLU-2018 Egypt 06-12-2001 06-07-2012
 44 Jennifer Carpenter FLU-2018 Turkey 02-01-2007 06-02-2020
 10 April Weber MERS-COV Greece 08-03-2005 29-12-2008
-75 Sara Brown MD COVID-2019 China 20-07-2006 25-04-2011
+75 Sara Brown COVID-2019 China 20-07-2006 25-04-2011
 8 Sandy Lewis H1N1 Egypt 05-03-2001 14-02-2011
 69 Cody Gallegos SARS-COV-2 Brazil 28-06-2002 22-03-2004
 25 Taylor Williams H1N1 Greece 20-08-2001 04-09-2015
