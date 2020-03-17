@@ -2,8 +2,8 @@
 #define __INPUT_H_
 
 #include "hash.h"
-
-long ReadFile(const char * patientRecordsFile, Hash * patientHash);
+#include "hashDC.h"
+long ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash);
 void Print_Input(char * patientRecordsFile, long diseaseHashtableNumOfEntries, long countryHashtableNumOfEntries, long bucketSize);
 
 #endif
