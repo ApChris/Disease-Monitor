@@ -1,6 +1,6 @@
 #include "../include/input.h"
 
-long ReadFile(const char * patientRecordsFile, Hash * patientHash)
+long ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash)
 {
     // for getline
     char * line = NULL;
@@ -91,6 +91,8 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash)
             exitDate -> day = TAG;
             info = PatientInfo_Init(recordID,patientFirstName,patientLastName,diseaseID,country, entryDate, exitDate);      // create the
             Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)diseaseID),info);
+            Hash_DC_Insert(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID), diseaseID, entryDate, info);
+            Hash_DC_Insert(countryHash,Hash_Function_DJB2((unsigned char *)country), country, entryDate, info);
             free(recordID);
             free(patientFirstName);
             free(patientLastName);
@@ -110,6 +112,8 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash)
 
         info = PatientInfo_Init(recordID,patientFirstName,patientLastName,diseaseID,country, entryDate, exitDate);      // create the
         Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)diseaseID),info);
+        Hash_DC_Insert(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID), diseaseID, entryDate, info);
+        Hash_DC_Insert(countryHash,Hash_Function_DJB2((unsigned char *)country), country, entryDate, info);
         free(recordID);
         free(patientFirstName);
         free(patientLastName);
