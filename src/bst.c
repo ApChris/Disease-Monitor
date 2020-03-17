@@ -11,7 +11,7 @@
 #include "../include/bst.h"
 
 
-Node * CreateNode(Date * entryDate)
+Node * CreateNode(Date * entryDate, PatientInfo * info)
 {
     Node * node;
     if( (node = (Node *)malloc(sizeof(Node))) == NULL)
@@ -24,7 +24,8 @@ Node * CreateNode(Date * entryDate)
         perror("Error(CreateNode): ");
         exit(EXIT_FAILURE);
     }
-    node -> entryDate = entryDate;
+    node -> entryDate = info -> entryDate;
+    node -> info = info;
     node -> left = NULL;
     node -> right = NULL;
     return node;
@@ -47,28 +48,29 @@ void inorder(Node * node)
     if(node != NULL)
     {
         inorder(node -> left);
-        printf("%ld-%ld-%ld\n", node -> entryDate -> day,node -> entryDate -> month, node -> entryDate -> year);
+        printf("%ld-%ld-%ld -> ", node -> entryDate -> day,node -> entryDate -> month, node -> entryDate -> year);
+        PatientInfo_Print(node -> info);
         inorder(node -> right);
     }
 }
 
-Node * PushBST(Node * node, Date * entryDate)
+Node * PushBST(Node * node, Date * entryDate, PatientInfo * info)
 {
-    Node * newNode = CreateNode(entryDate);
+    Node * newNode = CreateNode(entryDate, info);
     if(node == NULL)
     {
         node = newNode;
         return node;
     }
 
-
+    printf("%ld-%ld-%ld -> ", node -> entryDate -> day,node -> entryDate -> month, node -> entryDate -> year);
     if(Compare_Date(entryDate, node -> entryDate) == -1)
     {
-        node -> left = PushBST(node -> left, entryDate);
+        node -> left = PushBST(node -> left, entryDate, info);
     }
     else
     {
-        node -> right = PushBST(node -> right, entryDate);
+        node -> right = PushBST(node -> right, entryDate, info);
     }
     return node;
 }
