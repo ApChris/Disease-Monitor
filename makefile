@@ -3,7 +3,8 @@ OBJS = 	build/diseaseMonitor.o \
 		build/hash.o \
 		build/input.o \
 		build/bst.o \
-		build/hashDC.o
+		build/hashDC.o \
+		build/requests.o
 		#build/unit_testing.o
 
 
@@ -38,6 +39,9 @@ build/bst.o: src/bst.c
 	$(CC) $(FLAGS) $< -o $@
 
 build/hashDC.o: src/hashDC.c
+	$(CC) $(FLAGS) $< -o $@
+
+build/requests.o: src/requests.c
 	$(CC) $(FLAGS) $< -o $@
 #build/unit_testing.o: unit_testing.c
 #	$(CC) $(FLAGS) $< -o $@ $(CUNIT_FLAG)
