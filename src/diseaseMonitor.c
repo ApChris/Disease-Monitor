@@ -9,6 +9,7 @@
 #include "../include/input.h"
 #include "../include/bst.h"
 #include "../include/hashDC.h"
+#include "../include/requests.h"
 
 int main(int argc, char const *argv[])
 {
@@ -144,6 +145,9 @@ int main(int argc, char const *argv[])
     Hash_DC_Print(countryHash);
     inorder(countryHash -> bucketTable[2] -> nodes[1] -> bst -> root);
     // Patient_PatientInfo_Deallocate(&info);
+
+
+    Read_Requests(diseaseHash, countryHash, patientHash);
     free(patientRecordsFile);
     return 0;
 }

@@ -3,6 +3,7 @@
 
 #include "date.h"
 #include "hash.h"
+
 typedef struct Node
 {
     Date * entryDate;

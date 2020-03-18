@@ -20,7 +20,7 @@ typedef struct BucketNode_DC
     long long number;
     char * dc_name;
     BST * bst;
-    
+
 }BucketNode_DC;
 
 typedef struct Bucket_DC
