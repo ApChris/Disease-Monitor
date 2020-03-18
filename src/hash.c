@@ -508,8 +508,6 @@ void Hash_Deallocate(Hash ** ht,bool remove)
 
 PatientInfo * Hash_Find_Patient(Hash * ht,long long number, const char * recordID)
 {
-    // PatientInfo * result;
     size_t position = number % ht -> hashSize;
     return Bucket_Find_Patient(ht -> bucketTable[position],number,recordID);
-    // return result;
 }
