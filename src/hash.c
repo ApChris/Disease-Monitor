@@ -228,6 +228,31 @@ static void Patient_Deallocate(Patient ** patient,bool remove)
         *patient = NULL;
     }
 }
+
+static PatientInfo * Patient_Find_Patient(const Patient * patient, const char * recordID)
+{
+    size_t i = 0;
+
+    if(patient == NULL)
+    {
+        return 0;
+    }
+    while(i < patient -> length)
+    {
+
+        if(!strcmp(patient -> info[i] -> recordID,recordID))
+        {
+            return patient -> info[i];
+        }
+        i++;
+    }
+    if(patient -> next != NULL)
+    {
+        Patient_Find_Patient(patient -> next,recordID);
+    }
+    return NULL;
+
+}
 // ----------------------------- BUCKET NODE -----------------------------
 static BucketNode * BucketNode_Init(long long number, size_t size)
 {
@@ -370,6 +395,30 @@ static void Bucket_Deallocate(Bucket ** bucket, bool remove)
     *bucket = NULL;
 }
 
+static PatientInfo * Bucket_Find_Patient(const Bucket * bucket,long long number,const char * recordID)
+{
+    size_t i = 0;
+
+    if(bucket == NULL)
+    {
+        return 0;
+    }
+    while(i < bucket -> length)
+    {
+
+        if(bucket -> nodes[i] -> number == number)
+        {
+            return Patient_Find_Patient(bucket -> nodes[i] -> head,recordID);
+        }
+        i++;
+    }
+    if(bucket -> next != NULL)
+    {
+        Bucket_Find_Patient(bucket -> next, number,recordID);
+    }
+    return NULL;
+
+}
 
 // ----------------------------- HASH -----------------------------------------
 
@@ -454,4 +503,13 @@ void Hash_Deallocate(Hash ** ht,bool remove)
     free((*ht) -> bucketTable);
     free(*ht);
     *ht = NULL;
+}
+
+
+PatientInfo * Hash_Find_Patient(Hash * ht,long long number, const char * recordID)
+{
+    // PatientInfo * result;
+    size_t position = number % ht -> hashSize;
+    return Bucket_Find_Patient(ht -> bucketTable[position],number,recordID);
+    // return result;
 }
