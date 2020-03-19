@@ -1,7 +1,103 @@
 
 #include "../include/requests.h"
 
-long Request_6(Hash * patientHash, char * tok)
+
+bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash, char * tok)
+{
+
+    char * recordID = NULL;
+    char * patientFirstName = NULL;
+    char * patientLastName = NULL;
+    char * diseaseID = NULL;
+    char * country = NULL;
+    Date * entryDate = NULL;
+    Date * exitDate = NULL;
+
+    entryDate = malloc(sizeof(*entryDate));
+    exitDate = malloc(sizeof(*exitDate));
+
+    char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$;";
+    PatientInfo * info = NULL;
+
+    // Get recordID
+    tok = strtok(NULL, " ");
+    recordID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+    strcpy(recordID,(const char *)tok);
+
+    // Read patientFirstName
+    tok = strtok(NULL," ");
+    patientFirstName = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+    strcpy(patientFirstName,(const  char *)tok);
+
+    // Read patientLastName
+    tok = strtok(NULL," ");
+    patientLastName = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+    strcpy(patientLastName,(const  char *)tok);
+
+    // Read diseaseID
+    tok = strtok(NULL," ");
+    diseaseID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+    strcpy(diseaseID,(const  char *)tok);
+
+    // Read country
+    tok = strtok(NULL," ");
+    country = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+    strcpy(country,(const  char *)tok);
+
+
+    // read entryDate
+    tok = strtok(NULL,delimiters);
+    entryDate -> day = (long)atoi(tok);
+
+    tok = strtok(NULL,delimiters);
+    entryDate -> month = (long)atoi(tok);
+
+    tok = strtok(NULL,delimiters);
+    entryDate -> year = (long)atoi(tok);
+
+    // read ExitDate
+    tok = strtok(NULL,delimiters);
+
+    // if current patient doessn't
+    if(tok == NULL)
+    {
+        // Flag to fix the print function
+        exitDate -> day = TAG;
+        info = PatientInfo_Init(recordID,patientFirstName,patientLastName,diseaseID,country, entryDate, exitDate);      // create the
+        Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)recordID),info);
+        Hash_DC_Insert(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID), diseaseID, entryDate, info);
+        Hash_DC_Insert(countryHash,Hash_Function_DJB2((unsigned char *)country), country, entryDate, info);
+        free(recordID);
+        free(patientFirstName);
+        free(patientLastName);
+        free(diseaseID);
+        free(country);
+
+        return true;
+    }
+
+    exitDate -> day = (long)atoi(tok);
+
+    tok = strtok(NULL,delimiters);
+    exitDate -> month = (long)atoi(tok);
+
+    tok = strtok(NULL,delimiters);
+    exitDate -> year = (long)atoi(tok);
+
+    info = PatientInfo_Init(recordID,patientFirstName,patientLastName,diseaseID,country, entryDate, exitDate);      // create the
+    Hash_Insert(patientHash,Hash_Function_DJB2((unsigned char *)recordID),info);
+    Hash_DC_Insert(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID), diseaseID, entryDate, info);
+    Hash_DC_Insert(countryHash,Hash_Function_DJB2((unsigned char *)country), country, entryDate, info);
+    free(recordID);
+    free(patientFirstName);
+    free(patientLastName);
+    free(diseaseID);
+    free(country);
+    return true;
+}
+
+
+bool Request_6(Hash * patientHash, char * tok)
 {
 
     char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$;";
@@ -10,6 +106,7 @@ long Request_6(Hash * patientHash, char * tok)
     if(info == NULL)
     {
         printf("This recordID doesn't exist. Please try again!!\n");
+        return false;
     }
     else
     {
@@ -24,7 +121,26 @@ long Request_6(Hash * patientHash, char * tok)
         tok = strtok(NULL,delimiters);
         info -> exitDate -> year = (long)atoi(tok);
         PatientInfo_Print(info);
+        return true;
+    }
+}
 
+bool Request_7(Hash_DC * diseaseHash, char * tok)
+{
+
+    char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|=+*@#$;";
+    tok = strtok(NULL," \n");
+    if(tok == NULL)
+    {
+        printf("This recordID doesn't exist. Please try again!!\n");
+        return true;
+    }
+    else
+    {
+        printf("%s\n",tok);
+        BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)tok), tok);
+        inorder(bst -> root);
+        return true;
     }
 }
 
@@ -32,7 +148,7 @@ long Request_6(Hash * patientHash, char * tok)
 static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Hash * patientHash, char * request)
 {
 
-    long result = 0;
+    bool result;
     char * tok;
     char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$";
     tok = strtok(request,delimiters);
@@ -71,27 +187,30 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
             printf("4\n");
 
         }
-        else if(strcmp(tok,"insertPatientRecord") == 0)
+        else if(!strcmp(tok,"insertPatientRecord"))
         {
-            // result = Request_5(hashSender,tok);
-            printf("5\n");
+            printf("edwww\n");
+            if(Request_5(patientHash, diseaseHash, countryHash, tok))
+            {
+                printf("\nPatient has been inserted successfully\n");
+            }
+            printf("bghka\n");
+            return false;
 
         }
         else if(strcmp(tok,"recordPatientExit") == 0)
         {
-            result = Request_6(patientHash,tok);
-            if(result != -1)
+            if(Request_6(patientHash,tok))
             {
-                printf("\nBalance = %ld\n\n",result);
-                printf("Give another:\n");
+                printf("\nExitDate has been added successfully!\n");
             }
-            result = 0;
             printf("6\n");
+            return false;
 
         }
         else if(strcmp(tok,"numCurrentPatients") == 0)
         {
-            // result = Request_7(wh,tok);
+            Request_7(diseaseHash,tok);
 
             printf("7\n");
 
@@ -99,11 +218,10 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
         else if(strcmp(tok,"exit") == 0)
         {
             printf("Promt has been closed!!!\n");
-            result = -1;
-            return result;;
+            return true;
 
         }
-        return result;
+        return false;
 
     }
 
@@ -119,8 +237,7 @@ void Read_Requests(Hash_DC * diseaseHash, Hash_DC * countryHash, Hash * patientH
     printf("---------> Promt <---------\n");
     while((read = getline(&request,&length, stdin)) != -1)
     {
-        printf("%s\n",request);
-        if(Read_Requests_Parse(diseaseHash, countryHash, patientHash, request) < 0)
+        if(Read_Requests_Parse(diseaseHash, countryHash, patientHash, request))
         {
             break;
         }
