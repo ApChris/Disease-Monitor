@@ -39,7 +39,7 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * dis
     while((read = getline(&line,&length, file)) != -1)
     {
         PatientInfo * info = NULL;
-        // printf("%ld ",i++);
+
         // Get recordID
         tok = strtok(line, " ");
         recordID = ( char *)malloc(1 + sizeof(char) * strlen(tok));

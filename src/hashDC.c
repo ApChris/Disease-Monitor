@@ -112,6 +112,30 @@ static void Bucket_DC_Print(const Bucket_DC * bucket)
 }
 
 
+static BST * Bucket_DC_Get_BSTroot(const Bucket_DC * bucket, long long number, const char * dc_name)
+{
+    size_t i = 0;
+
+    if(bucket == NULL)
+    {
+        return 0;
+    }
+    while(i < bucket -> length)
+    {
+
+        if((bucket -> nodes[i] -> number == number) && (!strcmp(bucket -> nodes[i] -> dc_name, dc_name)))
+        {
+            return bucket -> nodes[i] -> bst;
+        }
+        i++;
+    }
+    if(bucket -> next != NULL)
+    {
+        Bucket_DC_Get_BSTroot(bucket -> next, number, dc_name);
+    }
+    return NULL;
+
+}
 // ----------------------------- HASH_DC -----------------------------------------
 
 Hash_DC * Hash_DC_Init(size_t hashSize, size_t bucketSize)
@@ -163,7 +187,7 @@ void Hash_DC_Insert(Hash_DC * ht, long long number, const char * dc_name, Date *
     Bucket_DC_Insert(ht -> bucketTable[position], number,dc_name, entryDate, info);
 }
 
-void Hash_DC_Print(const Hash * ht)
+void Hash_DC_Print(const Hash_DC * ht)
 {
     size_t i = 0;
     while(i < ht -> hashSize)
@@ -173,4 +197,11 @@ void Hash_DC_Print(const Hash * ht)
         printf("\n");
         i++;
     }
+}
+
+
+BST * Hash_DC_Get_BSTroot(const Hash_DC * ht,long long number, const char * dc_name)
+{
+    size_t position = number % ht -> hashSize;
+    return Bucket_DC_Get_BSTroot(ht -> bucketTable[position],number,dc_name);
 }
