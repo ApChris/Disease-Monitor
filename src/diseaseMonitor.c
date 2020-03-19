@@ -148,6 +148,7 @@ int main(int argc, char const *argv[])
 
 
     Read_Requests(diseaseHash, countryHash, patientHash);
+    inorder(countryHash -> bucketTable[2] -> nodes[1] -> bst -> root);
     free(patientRecordsFile);
     return 0;
 }
