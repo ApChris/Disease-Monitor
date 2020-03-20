@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+long tResult;
+
 typedef struct date
 {
     long day;
