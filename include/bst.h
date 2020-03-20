@@ -1,7 +1,6 @@
 #ifndef __BST_H_
 #define __BST_H_
 
-#include "date.h"
 #include "hash.h"
 
 typedef struct Node
@@ -24,4 +23,6 @@ void inorder(Node * node);
 Node * DeleteNode(Node * node, Date * entryDate);
 long SearchBST(BST * root,Date * entryDate, PatientInfo * info);
 void DeallocateBST(BST * temp);
+
+void getCurrentPatients(Node * node);
 #endif
