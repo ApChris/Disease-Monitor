@@ -132,14 +132,21 @@ bool Request_7(Hash_DC * diseaseHash, char * tok)
     tok = strtok(NULL," \n");
     if(tok == NULL)
     {
-        printf("This recordID doesn't exist. Please try again!!\n");
+        printf("No Input\n");
         return true;
     }
     else
     {
-        printf("%s\n",tok);
+        // global variable
+        tResult = 0;
+
+        // Get root of current disease
         BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)tok), tok);
-        inorder(bst -> root);
+
+        // get Patients
+        getCurrentPatients(bst -> root);
+        printf("Current patients = %ld\n",tResult);
+
         return true;
     }
 }
