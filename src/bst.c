@@ -54,6 +54,21 @@ void inorder(Node * node)
     }
 }
 
+void getCurrentPatients(Node * node)
+{
+    if(node != NULL)
+    {
+        getCurrentPatients(node -> left);
+        if(node -> info -> exitDate -> day == TAG)
+        {
+            tResult++;
+            PatientInfo_Print(node -> info);
+        }
+        getCurrentPatients(node -> right);
+    }
+}
+
+
 Node * PushBST(Node * node, Date * entryDate, PatientInfo * info)
 {
     Node * newNode = CreateNode(entryDate, info);
