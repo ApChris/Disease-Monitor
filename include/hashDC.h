@@ -6,9 +6,9 @@
 #include <stdlib.h>
 #include <string.h>
 
-// #include "date.h"
+
 #include "bst.h"
-#include "hash.h"
+
 #define TRUE 1
 #define FALSE 0
 #define TAG 1400322
