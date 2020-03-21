@@ -14,6 +14,7 @@ typedef struct Node
 typedef struct BST
 {
     Node * root;
+    size_t totalNodes;
 }BST;
 
 Node * CreateNode(Date * entryDate, PatientInfo * info);
@@ -24,5 +25,6 @@ Node * DeleteNode(Node * node, Date * entryDate);
 long SearchBST(BST * root,Date * entryDate, PatientInfo * info);
 void DeallocateBST(BST * temp);
 
+void getPatientsInThatPeriod(Node * node, Date * entryDate, Date * exitDate);
 void getCurrentPatients(Node * node);
 #endif
