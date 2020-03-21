@@ -54,6 +54,80 @@ bool Request_1( Hash_DC * diseaseHash, char * tok)
     return false;
 }
 
+bool Request_2(Hash_DC * diseaseHash, char * tok)
+{
+    char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$;";
+
+    char * diseaseID;
+
+    tok = strtok(NULL," ");
+    diseaseID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+    strcpy(diseaseID,(const  char *)tok);
+
+
+    Date * entryDate = NULL;
+    Date * exitDate = NULL;
+    entryDate = malloc(sizeof(*entryDate));
+    exitDate = malloc(sizeof(*exitDate));
+
+    // // entryDate
+    tok = strtok(NULL, delimiters);
+    entryDate -> day = (long)atoi(tok);
+
+    tok = strtok(NULL,delimiters);
+    entryDate -> month = (long)atoi(tok);
+
+    tok = strtok(NULL,delimiters);
+    entryDate -> year = (long)atoi(tok);
+
+    // exitDate
+    tok = strtok(NULL,delimiters);
+
+    if(tok == NULL)
+    {
+        free(entryDate);
+        free(exitDate);
+        printf("You have to add exitDate! Please try again!\n");
+        return true;
+    }
+    // exitDate
+    exitDate -> day = (long)atoi(tok);
+
+    tok = strtok(NULL,delimiters);
+    exitDate -> month = (long)atoi(tok);
+
+    tok = strtok(NULL,delimiters);
+    exitDate -> year = (long)atoi(tok);
+// diseaseFrequency H1N1 10-10-2010 20-20-2020 Greece
+
+    tok = strtok(NULL,delimiters);
+    // without country
+    if(tok == NULL)
+    {
+        BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID),diseaseID);
+        getPatientsInThatPeriod(bst -> root, entryDate, exitDate);
+    }
+    // user gave a country
+    else
+    {
+        tResult = 0;
+        // store country
+        char * country;
+        country = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+        strcpy(country,(const  char *)tok);
+
+        BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID),diseaseID);
+        getPatientsInThatPeriod_SpecifiCountry(bst -> root, entryDate, exitDate, country);
+        printf("Result = %ld\n", tResult);
+        free(country);
+    }
+    free(entryDate);
+    free(exitDate);
+    return true;
+
+}
+
+
 bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash, char * tok)
 {
 
@@ -228,6 +302,11 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
         else if(strcmp(tok,"diseaseFrequency") == 0)
         {
             printf("2\n");
+            if(Request_2(diseaseHash,tok))
+            {
+                printf("\ndiseaseFrequency request has been done successfully!\n");
+            }
+
             // tok = Request_2(hashSender,hashReceiver,wh,tok,dateArg,timeArg,root);
             // tok = Request_2(hashSender,hashReceiver,wh,tok,dateArg,timeArg,root);
             // printf("%s\n",tok);
