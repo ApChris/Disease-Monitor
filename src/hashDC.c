@@ -14,9 +14,9 @@ static BucketNode_DC * BucketNode_DC_Init(long long number, size_t size, const c
 
     bucketnode -> number = number;
     bucketnode -> size = size;
-    bucketnode -> bst = CreateBST();;
+    bucketnode -> bst = CreateBST();
     bucketnode -> bst -> root = PushBST(bucketnode -> bst -> root, entryDate, info);
-
+    bucketnode -> bst -> totalNodes++;
     counter = strlen(dc_name) + 1;
     bucketnode -> dc_name = malloc(1 + sizeof(char) * counter);
     strcpy(bucketnode -> dc_name,dc_name);
@@ -70,6 +70,7 @@ static void Bucket_DC_Insert(Bucket_DC * bucket, long long number,const char * d
             // BucketNode_DC_Insert(bucket -> nodes[i], info);
             bucket -> nodes[i] -> bst -> root = PushBST(bucket -> nodes[i] -> bst -> root, entryDate, info);
             // bucket -> nodes[i] -> info = info;
+            bucket -> nodes[i] -> bst -> totalNodes++;
             return;
         }
         i++;
@@ -109,6 +110,56 @@ static void Bucket_DC_Print(const Bucket_DC * bucket)
         i++;
     }
     Bucket_DC_Print(bucket -> next);
+}
+
+static void Bucket_DC_CurrentActivePatients(const Bucket_DC * bucket)
+{
+    size_t i = 0;
+    if(bucket == NULL)
+    {
+        return;
+    }
+    while(i < bucket -> length)
+    {
+        printf("-->%s\n", bucket -> nodes[i] -> dc_name);
+        getCurrentPatients(bucket -> nodes[i] -> bst -> root);
+        i++;
+    }
+    Bucket_DC_CurrentActivePatients(bucket -> next);
+}
+
+static void Bucket_DC_AllPatients(const Bucket_DC * bucket)
+{
+    size_t i = 0;
+    if(bucket == NULL)
+    {
+        return;
+    }
+    while(i < bucket -> length)
+    {
+        printf("-->%s-->%ld\n", bucket -> nodes[i] -> dc_name, bucket -> nodes[i] -> bst -> totalNodes);
+        i++;
+    }
+    Bucket_DC_AllPatients(bucket -> next);
+}
+
+
+static void Bucket_DC_AllPatientsInThatPeriod(const Bucket_DC * bucket, Date * entryDate, Date * exitDate)
+{
+    size_t i = 0;
+    if(bucket == NULL)
+    {
+        return;
+    }
+    while(i < bucket -> length)
+    {
+        tResult = 0;
+        printf("-->%s\n", bucket -> nodes[i] -> dc_name);
+        getPatientsInThatPeriod(bucket -> nodes[i] -> bst -> root, entryDate, exitDate);
+        printf("--- = %ld\n",tResult);
+        i++;
+    }
+    Bucket_DC_AllPatientsInThatPeriod(bucket -> next, entryDate, exitDate);
 }
 
 
@@ -195,6 +246,37 @@ void Hash_DC_Print(const Hash_DC * ht)
         printf("Position %zu:\n", i);
         Bucket_DC_Print(ht -> bucketTable[i]);
         printf("\n");
+        i++;
+    }
+}
+
+void Hash_DC_CurrentActivePatients(const Hash_DC * ht)
+{
+    size_t i = 0;
+    while(i < ht -> hashSize)
+    {
+        Bucket_DC_CurrentActivePatients(ht -> bucketTable[i]);
+        i++;
+    }
+}
+
+
+void Hash_DC_AllPatients(const Hash_DC * ht)
+{
+    size_t i = 0;
+    while(i < ht -> hashSize)
+    {
+        Bucket_DC_AllPatients(ht -> bucketTable[i]);
+        i++;
+    }
+}
+
+void Hash_DC_AllPatientsInThatPeriod(const Hash_DC * ht,Date * entryDate, Date * exitDate)
+{
+    size_t i = 0;
+    while(i < ht -> hashSize)
+    {
+        Bucket_DC_AllPatientsInThatPeriod(ht -> bucketTable[i], entryDate, exitDate);
         i++;
     }
 }
