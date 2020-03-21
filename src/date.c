@@ -1,7 +1,7 @@
 /*
 	File Name 	: date .c
 	Author 		: Christoforos Apostolopoulos
-	Project 	: Number -> 1 , System Programming 2019-2020
+	Project 	: Disease-Monitor , System Programming 2019-2020
 */
 
 #include "../include/date.h"

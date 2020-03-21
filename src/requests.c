@@ -1,6 +1,58 @@
 
 #include "../include/requests.h"
 
+bool Request_1( Hash_DC * diseaseHash, char * tok)
+{
+    char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$;";
+    tok = strtok(NULL,delimiters);
+    if(tok == NULL)
+    {
+        printf("Arguments missing!!\n");
+        Hash_DC_AllPatients(diseaseHash);
+        return true;
+    }
+    else
+    {
+        Date * entryDate = NULL;
+        Date * exitDate = NULL;
+        entryDate = malloc(sizeof(*entryDate));
+        exitDate = malloc(sizeof(*exitDate));
+
+        // entryDate
+        entryDate -> day = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        entryDate -> month = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        entryDate -> year = (long)atoi(tok);
+
+        // exitDate
+        tok = strtok(NULL,delimiters);
+
+        if(tok == NULL)
+        {
+            free(entryDate);
+            free(exitDate);
+            printf("You have to add exitDate! Please try again!\n");
+            return true;
+        }
+
+        exitDate -> day = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        exitDate -> month = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        exitDate -> year = (long)atoi(tok);
+        printf("%ld-%ld-%ld\n",entryDate -> day,entryDate -> month,entryDate -> year);
+        Hash_DC_AllPatientsInThatPeriod(diseaseHash, entryDate, exitDate);
+        free(entryDate);
+        free(exitDate);
+        return true;
+    }
+    return false;
+}
 
 bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash, char * tok)
 {
@@ -132,7 +184,8 @@ bool Request_7(Hash_DC * diseaseHash, char * tok)
     tok = strtok(NULL," \n");
     if(tok == NULL)
     {
-        printf("No Input\n");
+        printf("Arguments missing!!\n");
+        Hash_DC_CurrentActivePatients(diseaseHash);
         return true;
     }
     else
@@ -164,9 +217,12 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
     {
         if(strcmp(tok,"globalDiseaseStats") == 0)
         {
-            // result = Request_1(hashSender,hashReceiver,wh,tok,dateArg,timeArg,root);
-            // printf("%s\n",tok);
-            printf("1\n");
+            if(Request_1(diseaseHash,tok))
+            {
+                printf("\nglobalDiseaseStats request has been done successfully!\n");
+            }
+            printf("6\n");
+            return false;
 
         }
         else if(strcmp(tok,"diseaseFrequency") == 0)
@@ -219,8 +275,8 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
         {
             Request_7(diseaseHash,tok);
 
-            printf("7\n");
-
+            printf("--------------------------------------------\n");
+            return false;
         }
         else if(strcmp(tok,"exit") == 0)
         {
