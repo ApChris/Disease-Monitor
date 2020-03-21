@@ -83,6 +83,25 @@ void getPatientsInThatPeriod(Node * node, Date * entryDate, Date * exitDate)
     }
 }
 
+// A function which finds the patients from specific country in spesific period
+void getPatientsInThatPeriod_SpecifiCountry(Node * node, Date * entryDate, Date * exitDate, char * country)
+{
+    if(node != NULL)
+    {
+        getPatientsInThatPeriod_SpecifiCountry(node -> left, entryDate, exitDate, country);
+        if(!strcmp(node -> info -> country, country))
+        {
+            // check date
+            if( (Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            {
+                tResult++;
+                PatientInfo_Print(node -> info);
+            }
+        }
+
+        getPatientsInThatPeriod_SpecifiCountry(node -> right, entryDate, exitDate, country);
+    }
+}
 
 Node * PushBST(Node * node, Date * entryDate, PatientInfo * info)
 {
