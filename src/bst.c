@@ -40,6 +40,7 @@ BST * CreateBST()
         exit(EXIT_FAILURE);
     }
     bst -> root = NULL;
+    bst -> totalNodes = 0;
     return bst;
 }
 
@@ -65,6 +66,20 @@ void getCurrentPatients(Node * node)
             PatientInfo_Print(node -> info);
         }
         getCurrentPatients(node -> right);
+    }
+}
+
+void getPatientsInThatPeriod(Node * node, Date * entryDate, Date * exitDate)
+{
+    if(node != NULL)
+    {
+        getPatientsInThatPeriod(node -> left, entryDate, exitDate);
+        if( (Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+        {
+            tResult++;
+            PatientInfo_Print(node -> info);
+        }
+        getPatientsInThatPeriod(node -> right, entryDate, exitDate);
     }
 }
 
