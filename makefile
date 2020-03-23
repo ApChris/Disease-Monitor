@@ -4,7 +4,9 @@ OBJS = 	build/diseaseMonitor.o \
 		build/input.o \
 		build/bst.o \
 		build/hashDC.o \
-		build/requests.o
+		build/requests.o \
+		build/binaryMaxHeap.o \
+		build/linkedlist.o
 		#build/unit_testing.o
 
 
@@ -42,6 +44,12 @@ build/hashDC.o: src/hashDC.c
 	$(CC) $(FLAGS) $< -o $@
 
 build/requests.o: src/requests.c
+	$(CC) $(FLAGS) $< -o $@
+
+build/binaryMaxHeap.o: src/binaryMaxHeap.c
+	$(CC) $(FLAGS) $< -o $@
+
+build/linkedlist.o: src/linkedlist.c
 	$(CC) $(FLAGS) $< -o $@
 #build/unit_testing.o: unit_testing.c
 #	$(CC) $(FLAGS) $< -o $@ $(CUNIT_FLAG)
