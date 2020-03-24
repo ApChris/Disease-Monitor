@@ -11,6 +11,8 @@
 #include "../include/hashDC.h"
 #include "../include/requests.h"
 
+#include "../include/binaryMaxHeap.h"
+
 int main(int argc, char const *argv[])
 {
     long result;                            // A variable to hold values from functions returns
@@ -148,7 +150,31 @@ int main(int argc, char const *argv[])
 
 
     Read_Requests(diseaseHash, countryHash, patientHash);
-    inorder(countryHash -> bucketTable[2] -> nodes[1] -> bst -> root);
+    // inorder(countryHash -> bucketTable[2] -> nodes[1] -> bst -> root);
+
+
+printf("-------------------------------\n");
+    // BinaryTreeNode ** nodes = (BinaryTreeNode **)malloc(sizeof(BinaryTreeNode *)* 3);
+    // // // for (size_t i = 0; i < 5; i++)
+    // // // {
+    //     nodes[0] = CreateBinaryTreeNode("MERS-COV",10);
+    //     nodes[1] = CreateBinaryTreeNode("COVID-2019",15);
+    //     nodes[2] = CreateBinaryTreeNode("SARS-1",30);
+    //
+    //     nodes = (BinaryTreeNode **)realloc(nodes,sizeof(BinaryTreeNode *)* 7);
+    //     nodes[3] = CreateBinaryTreeNode("EVD",40);
+    //     nodes[4] = CreateBinaryTreeNode("FLU-2018",50);
+    //     nodes[5] = CreateBinaryTreeNode("FLU-2019",100);
+    //     nodes[6] = CreateBinaryTreeNode("FLU-2020",40);
+    // // // }
+    // //
+    // BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
+    // maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0, 7);
+    // setParent(maxHeap -> root,maxHeap -> root);
+    // preorderMaxHeapify(maxHeap -> root);
+    // //
+    // //
+    // inorderMaxHeap(maxHeap -> root);
     free(patientRecordsFile);
     return 0;
 }
