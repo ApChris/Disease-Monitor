@@ -39,7 +39,6 @@ typedef struct Hash_DC
     Bucket_DC ** bucketTable;
 }Hash_DC;
 
-#endif
 
 Hash_DC * Hash_DC_Init(size_t hashSize, size_t bucketSize);
 void Hash_DC_Insert(Hash_DC * ht, long long number, const char * dc_name, Date * entryDate, PatientInfo * info);
@@ -48,3 +47,5 @@ void Hash_DC_CurrentActivePatients(const Hash_DC * ht);
 void Hash_DC_AllPatients(const Hash_DC * ht);
 BST * Hash_DC_Get_BSTroot(const Hash_DC * ht,long long number, const char * dc_name);
 void Hash_DC_AllPatientsInThatPeriod(const Hash_DC * ht,Date * entryDate, Date * exitDate);
+
+#endif
