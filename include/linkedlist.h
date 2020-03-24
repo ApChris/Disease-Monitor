@@ -1,5 +1,7 @@
 #ifndef __LINKEDLIST_H__
 #define __LINKEDLIST_H__
+#include <stdio.h>
+#include <stdbool.h>
 
 typedef struct ListNode
 {
