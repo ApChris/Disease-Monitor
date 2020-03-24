@@ -74,7 +74,5 @@ Hash * Hash_Init(size_t hashSize, size_t bucketSize);
 void Hash_Insert(Hash * ht, long long number, PatientInfo * info);
 void Hash_Print(const Hash * ht);
 void Hash_Deallocate(Hash ** ht,bool remove);
-// void Hash_Bye(Hash * ht,bool remove);
-// long Hash_Compare_Dates_Times(const Hash * ht,long long number, Date * date1,Date * date2, Time * time1, Time *time2,long flag);
 
 #endif
