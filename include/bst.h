@@ -2,6 +2,8 @@
 #define __BST_H_
 
 #include "hash.h"
+#include "binaryMaxHeap.h"
+#include "linkedlist.h"
 
 typedef struct Node
 {
@@ -24,7 +26,10 @@ void inorder(Node * node);
 Node * DeleteNode(Node * node, Date * entryDate);
 long SearchBST(BST * root,Date * entryDate, PatientInfo * info);
 void DeallocateBST(BST * temp);
-
+void inorderSearchNInsertCountry(Node * node,ListNode ** head);
+void inorderSearchNInsert(Node * node,ListNode ** head);
+void inorderSearchNInsertDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate);
+void inorderSearchNInsertCountryDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate);
 void getPatientsInThatPeriod(Node * node, Date * entryDate, Date * exitDate);
 void getCurrentPatients(Node * node);
 #endif
