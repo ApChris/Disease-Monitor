@@ -1,7 +1,8 @@
 #ifndef _BINARYMAXHEAP_H_
 #define _BINARYMAXHEAP_H_
+#include "linkedlist.h"
+#include <stdio.h>
 
-#include "stdio.h"
 
 typedef struct BinaryTreeNode
 {
@@ -35,4 +36,5 @@ void setParent(BinaryTreeNode * node,BinaryTreeNode * parent);
 void MaxHeapify(BinaryTreeNode * root, BinaryTreeNode * node);
 void preorderMaxHeapify(BinaryTreeNode * root);
 
+void GetKMaxValues(BinaryTreeNode * root, size_t k);
 #endif
