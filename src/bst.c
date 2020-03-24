@@ -105,14 +105,13 @@ void getPatientsInThatPeriod_SpecifiCountry(Node * node, Date * entryDate, Date 
 
 Node * PushBST(Node * node, Date * entryDate, PatientInfo * info)
 {
-    Node * newNode = CreateNode(entryDate, info);
     if(node == NULL)
     {
+        Node * newNode = CreateNode(entryDate, info);
         node = newNode;
         return node;
     }
 
-    printf("%ld-%ld-%ld -> ", node -> entryDate -> day,node -> entryDate -> month, node -> entryDate -> year);
     if(Compare_Date(entryDate, node -> entryDate) == -1)
     {
         node -> left = PushBST(node -> left, entryDate, info);
@@ -176,6 +175,91 @@ Node * DeleteNode(Node * node, Date * entryDate)
     return node;
 }
 
+void inorderSearchNInsert(Node * node,ListNode ** head)
+{
+    if(node != NULL)
+    {
+        inorderSearchNInsert(node -> left, head);
+        if(*head == NULL)
+        {
+            PushListNode(head, 1, node -> info -> diseaseID);
+        }
+        else
+        {
+            SearchInList(head,node -> info -> diseaseID)? printf("True\n") : PushListNode(head, 1, node -> info -> diseaseID);
+        }
+        inorderSearchNInsert(node -> right, head);
+    }
+}
+
+void inorderSearchNInsertDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate)
+{
+    if(node != NULL)
+    {
+        inorderSearchNInsertDate(node -> left, head, entryDate, exitDate);
+        if(*head == NULL)
+        {
+            if((Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            {
+                PushListNode(head, 1, node -> info -> diseaseID);
+            }
+        }
+        else
+        {
+            if((Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            {
+                SearchInList(head,node -> info -> diseaseID)? printf("True\n") : PushListNode(head, 1, node -> info -> diseaseID);
+            }
+        }
+        inorderSearchNInsertDate(node -> right, head, entryDate, exitDate);
+    }
+}
+
+void inorderSearchNInsertCountry(Node * node,ListNode ** head)
+{
+    if(node != NULL)
+    {
+        inorderSearchNInsertCountry(node -> left, head);
+        if(*head == NULL)
+        {
+            PushListNode(head, 1, node -> info -> country);
+        }
+        else
+        {
+            SearchInList(head,node -> info -> country)? printf("True\n") : PushListNode(head, 1, node -> info -> country);
+        }
+        inorderSearchNInsertCountry(node -> right, head);
+    }
+
+
+}
+
+void inorderSearchNInsertCountryDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate)
+{
+    if(node != NULL)
+    {
+        inorderSearchNInsertCountryDate(node -> left, head, entryDate, exitDate);
+        if(*head == NULL)
+        {
+            if((Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            {
+                printf("Mphka\n");
+                PushListNode(head, 1, node -> info -> country);
+            }
+        }
+        else
+        {
+            if((Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            {
+                printf("Mphkaaaaa\n");
+                SearchInList(head,node -> info -> country)? printf("True\n") : PushListNode(head, 1, node -> info -> country);
+            }
+        }
+        inorderSearchNInsertCountryDate(node -> right, head, entryDate, exitDate);
+    }
+
+
+}
 //
 // long SearchBST(BST * root, Date * entryDate)
 // {
