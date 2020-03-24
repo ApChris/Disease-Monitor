@@ -53,7 +53,7 @@ bool Request_1( Hash_DC * diseaseHash, char * tok)
     }
     return false;
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 bool Request_2(Hash_DC * diseaseHash, char * tok)
 {
     char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$;";
@@ -126,8 +126,231 @@ bool Request_2(Hash_DC * diseaseHash, char * tok)
     return true;
 
 }
+///////////////////////////////////////////////////////////////////////////////////////////////
+bool Request_3( Hash_DC * countryHash, char * tok)
+{
+    char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$;";
+    printf("edw\n");
+    // get k
+    tok = strtok(NULL,delimiters);
+    long k = atoi(tok);
+
+    // get country
+    tok = strtok(NULL,delimiters);
+    char * country;
+    country = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+    strcpy(country,(const  char *)tok);
+
+    tok = strtok(NULL,delimiters);
+    if(tok == NULL)
+    {
+        BST * bst = Hash_DC_Get_BSTroot(countryHash,Hash_Function_DJB2((unsigned char *)country), country);
+        ListNode * head = NULL;
+        inorderSearchNInsert(bst -> root,&head);
+        size_t maxK = LenOfList(head);
+        BinaryTreeNode ** nodes = (BinaryTreeNode **)malloc(sizeof(BinaryTreeNode *)* maxK);
+        ListNode * current = head;
+        for (size_t i = 0; i < maxK; i++)
+        {
+            nodes[i] = CreateBinaryTreeNode(current -> dc_name,current -> total_patientes);
+            current = current -> next;
+        }
+        BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
+        maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
+
+        PrintList(&head);
+
+        setParent(maxHeap -> root,maxHeap -> root);
+        preorderMaxHeapify(maxHeap -> root);
+        inorderMaxHeap(maxHeap -> root);
+        if(k > maxK || k == 0)
+        {
+            printf("Error Input: Total Diseases are:%ld\nPlease Give a number between 1 - %ld\n",maxK,maxK);
+            return false;
+        }
+        GetKMaxValues(maxHeap -> root, k);
+        // topk-Diseases 3 Greece
+        return true;
+    }
+    else
+    {
+        Date * entryDate = NULL;
+        Date * exitDate = NULL;
+        entryDate = malloc(sizeof(*entryDate));
+        exitDate = malloc(sizeof(*exitDate));
+
+        // entryDate
+        entryDate -> day = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        entryDate -> month = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        entryDate -> year = (long)atoi(tok);
+
+        // exitDate
+        tok = strtok(NULL,delimiters);
+
+        if(tok == NULL)
+        {
+            free(entryDate);
+            free(exitDate);
+            printf("You have to add exitDate! Please try again!\n");
+            return true;
+        }
+        // exitDate
+        exitDate -> day = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        exitDate -> month = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        exitDate -> year = (long)atoi(tok);
+
+        BST * bst = Hash_DC_Get_BSTroot(countryHash,Hash_Function_DJB2((unsigned char *)country), country);
+        inorder(bst -> root);
+        ListNode * head = NULL;
+        inorderSearchNInsertDate(bst -> root,&head, entryDate, exitDate);
+        size_t maxK = LenOfList(head);
+        BinaryTreeNode ** nodes = (BinaryTreeNode **)malloc(sizeof(BinaryTreeNode *)* maxK);
+        ListNode * current = head;
+        for (size_t i = 0; i < maxK; i++)
+        {
+            nodes[i] = CreateBinaryTreeNode(current -> dc_name,current -> total_patientes);
+            current = current -> next;
+        }
+        BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
+        maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
+
+        PrintList(&head);
+
+        setParent(maxHeap -> root,maxHeap -> root);
+        preorderMaxHeapify(maxHeap -> root);
+        inorderMaxHeap(maxHeap -> root);
+        if(k > maxK || k == 0)
+        {
+            printf("Error Input: Total Diseases are:%ld\nPlease Give a number between 1 - %ld\n",maxK,maxK);
+            return false;
+        }
+        GetKMaxValues(maxHeap -> root, k);
+    }
 
 
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+bool Request_4( Hash_DC * diseaseHash, char * tok)
+{
+    char delimiters[] = " \n\t\r\v\f\n:,/.-><[]{}|=+*@#$;";
+    printf("edw\n");
+    // get k
+    tok = strtok(NULL,delimiters);
+    long k = atoi(tok);
+
+    // get disease
+    tok = strtok(NULL, " ");
+    char * diseaseID;
+    diseaseID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
+    strcpy(diseaseID,(const  char *)tok);
+
+    tok = strtok(NULL,delimiters);
+    if(tok == NULL)
+    {
+        BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID), diseaseID);
+        inorder(bst -> root);
+        ListNode * head = NULL;
+        inorderSearchNInsertCountry(bst -> root,&head);
+        size_t maxK = LenOfList(head);
+        printf("maxK = %ld\n",maxK);
+        BinaryTreeNode ** nodes = (BinaryTreeNode **)malloc(sizeof(BinaryTreeNode *)* maxK);
+        ListNode * current = head;
+        for (size_t i = 0; i < maxK; i++)
+        {
+            nodes[i] = CreateBinaryTreeNode(current -> dc_name,current -> total_patientes);
+            current = current -> next;
+        }
+        BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
+        maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
+
+        PrintList(&head);
+
+        setParent(maxHeap -> root,maxHeap -> root);
+        preorderMaxHeapify(maxHeap -> root);
+        inorderMaxHeap(maxHeap -> root);
+        if(k > maxK || k == 0)
+        {
+            printf("Error Input: Total Diseases are:%ld\nPlease Give a number between 1 - %ld\n",maxK,maxK);
+            return false;
+        }
+        GetKMaxValues(maxHeap -> root, k);
+        // topk-Diseases 3 Greece
+        return true;
+    }
+    else
+    {
+        Date * entryDate = NULL;
+        Date * exitDate = NULL;
+        entryDate = malloc(sizeof(*entryDate));
+        exitDate = malloc(sizeof(*exitDate));
+
+        // entryDate
+        entryDate -> day = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        entryDate -> month = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        entryDate -> year = (long)atoi(tok);
+
+        // exitDate
+        tok = strtok(NULL,delimiters);
+
+        if(tok == NULL)
+        {
+            free(entryDate);
+            free(exitDate);
+            printf("You have to add exitDate! Please try again!\n");
+            return true;
+        }
+        // exitDate
+        exitDate -> day = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        exitDate -> month = (long)atoi(tok);
+
+        tok = strtok(NULL,delimiters);
+        exitDate -> year = (long)atoi(tok);
+
+        BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID), diseaseID);
+        inorder(bst -> root);
+        ListNode * head = NULL;
+        inorderSearchNInsertCountryDate(bst -> root,&head, entryDate, exitDate);
+        size_t maxK = LenOfList(head);
+        BinaryTreeNode ** nodes = (BinaryTreeNode **)malloc(sizeof(BinaryTreeNode *)* maxK);
+        ListNode * current = head;
+        for (size_t i = 0; i < maxK; i++)
+        {
+            nodes[i] = CreateBinaryTreeNode(current -> dc_name,current -> total_patientes);
+            current = current -> next;
+        }
+        BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
+        maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
+
+        PrintList(&head);
+
+        setParent(maxHeap -> root,maxHeap -> root);
+        preorderMaxHeapify(maxHeap -> root);
+        inorderMaxHeap(maxHeap -> root);
+        if(k > maxK || k == 0)
+        {
+            printf("Error Input: Total Diseases are:%ld\nPlease Give a number between 1 - %ld\n",maxK,maxK);
+            return false;
+        }
+        GetKMaxValues(maxHeap -> root, k);
+    }
+}
+///////////////////////////////////////////////////////////////////////////////////////////////
 bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash, char * tok)
 {
 
@@ -222,7 +445,7 @@ bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash,
     return true;
 }
 
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 bool Request_6(Hash * patientHash, char * tok)
 {
 
@@ -284,7 +507,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
 
     bool result;
     char * tok;
-    char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|-=+*@#$";
+    char delimiters[] = " \n\t\r\v\f\n:,/.><[]{}|=+*@#$";
     tok = strtok(request,delimiters);
 
     if(tok != NULL)
@@ -307,36 +530,29 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
                 printf("\ndiseaseFrequency request has been done successfully!\n");
             }
 
-            // tok = Request_2(hashSender,hashReceiver,wh,tok,dateArg,timeArg,root);
-            // tok = Request_2(hashSender,hashReceiver,wh,tok,dateArg,timeArg,root);
-            // printf("%s\n",tok);
-
         }
         else if(strcmp(tok,"topk-Diseases") == 0)
         {
-            tok = strtok(NULL," ");
-            //tok = strtok(NULL,delimiters);
 
-            // char * fileName = ( char *)malloc(1 + sizeof(char) * strlen(tok));
-            // strcpy(fileName,(const char *)tok);
-            // fileName[1 + sizeof(char) * strlen(tok)] = '\0';
-            // printf("%s\n",fileName);
-            // result = Request_3(fileName,hashSender,hashReceiver,wh,dateArg,timeArg,root);
-            printf("3\n");
+            if(Request_3(countryHash,tok))
+            {
+                printf("\ntopk-Diseases request has been done successfully!\n");
+            }
         }
         else if(strcmp(tok,"topk-Countries") == 0)
         {
-            printf("4\n");
+            if(Request_4(diseaseHash,tok))
+            {
+                printf("\ntopk-Diseases request has been done successfully!\n");
+            }
 
         }
         else if(!strcmp(tok,"insertPatientRecord"))
         {
-            printf("edwww\n");
             if(Request_5(patientHash, diseaseHash, countryHash, tok))
             {
                 printf("\nPatient has been inserted successfully\n");
             }
-            printf("bghka\n");
             return false;
 
         }
@@ -346,7 +562,6 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
             {
                 printf("\nExitDate has been added successfully!\n");
             }
-            printf("6\n");
             return false;
 
         }
@@ -368,7 +583,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
     }
 
 }
-
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 
 void Read_Requests(Hash_DC * diseaseHash, Hash_DC * countryHash, Hash * patientHash)
@@ -385,3 +600,4 @@ void Read_Requests(Hash_DC * diseaseHash, Hash_DC * countryHash, Hash * patientH
         }
     }
 }
+///////////////////////////////////////////////////////////////////////////////////////////////
