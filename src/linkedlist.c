@@ -28,7 +28,6 @@ bool SearchInList(ListNode ** head, char * dc_name)
     ListNode * tmp = *head;
     while(tmp != NULL)
     {
-        // printf("%s -> %ld\n",tmp -> dc_name, tmp -> total_patientes);
         if(!strcmp(tmp -> dc_name, dc_name))
         {
             tmp -> total_patientes++;
