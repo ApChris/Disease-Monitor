@@ -53,52 +53,24 @@ long LenOfList(ListNode * head)
     }
     return counter;
 }
-void DeleteListNode(ListNode ** head, char * dc_name)
+void DeleteList(ListNode ** head)
 {
-    ListNode * tmp = *head;
-    ListNode * prev;
-
-    if(tmp != NULL && !strcmp(tmp -> dc_name, dc_name))
-    {
-        // change head
-        *head = tmp -> next;
-        free(tmp);
-        return;
-    }
-
-    // Search for the data to be deleted
-    while(tmp != NULL && !strcmp(tmp -> dc_name, dc_name))
-    {
-        prev = tmp;
-        tmp = tmp -> next;
-    }
-
-    // if data doesn't exist in ll
-    if(tmp == NULL)
-    {
-        return;
-    }
-    // unlink the node from ll
-    prev -> next = tmp -> next;
-
-    free(tmp);
-}
-
-void Reverse(ListNode ** head)
-{
-    ListNode * prev = NULL;
-    ListNode * current = *head;
-    ListNode * next = NULL;
+    ListNode * current = * head;
+    ListNode * next;
 
     while(current != NULL)
     {
+        // change head
         next = current -> next;
-        current -> next = prev;
-        prev = current;
+        free(current -> dc_name);
+        free(current);
         current = next;
     }
-    *head = prev;
+
+
+    *head = NULL;
 }
+
 
 void PrintList(ListNode ** head)
 {
