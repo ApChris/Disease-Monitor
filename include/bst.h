@@ -19,17 +19,19 @@ typedef struct BST
     size_t totalNodes;
 }BST;
 
-Node * CreateNode(Date * entryDate, PatientInfo * info);
+Node * CreateNode(PatientInfo * info);
 BST * CreateBST();
 Node * PushBST(Node * node, Date * entryDate, PatientInfo * info);
 void inorder(Node * node);
+Node * minvNode(Node * node);
 Node * DeleteNode(Node * node, Date * entryDate);
 long SearchBST(BST * root,Date * entryDate, PatientInfo * info);
-void DeallocateBST(BST * temp);
+void DeallocateBST(Node * temp);
 void inorderSearchNInsertCountry(Node * node,ListNode ** head);
 void inorderSearchNInsert(Node * node,ListNode ** head);
 void inorderSearchNInsertDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate);
 void inorderSearchNInsertCountryDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate);
 void getPatientsInThatPeriod(Node * node, Date * entryDate, Date * exitDate);
+void getPatientsInThatPeriod_SpecifiCountry(Node * node, Date * entryDate, Date * exitDate, char * country);
 void getCurrentPatients(Node * node);
 #endif
