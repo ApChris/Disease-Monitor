@@ -155,10 +155,17 @@ bool Request_3( Hash_DC * countryHash, char * tok)
             nodes[i] = CreateBinaryTreeNode(current -> dc_name,current -> total_patientes);
             current = current -> next;
         }
+        DeleteList(&head);
         BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
         maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
-
-        PrintList(&head);
+        for (size_t i = 0; i < maxK; i++)
+        {
+            free(nodes[i] -> dc_name);
+            free(nodes[i]);
+        }
+        free(head);
+        free(nodes);
+        // PrintList(&head);
 
         setParent(maxHeap -> root,maxHeap -> root);
         preorderMaxHeapify(maxHeap -> root);
@@ -169,6 +176,9 @@ bool Request_3( Hash_DC * countryHash, char * tok)
             return false;
         }
         GetKMaxValues(maxHeap -> root, k);
+        DeallocateMaxHeap(maxHeap -> root);
+        free(maxHeap);
+
         // topk-Diseases 3 Greece
         return true;
     }
@@ -219,10 +229,16 @@ bool Request_3( Hash_DC * countryHash, char * tok)
             nodes[i] = CreateBinaryTreeNode(current -> dc_name,current -> total_patientes);
             current = current -> next;
         }
+        DeleteList(&head);
         BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
         maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
-
-        PrintList(&head);
+        for (size_t i = 0; i < maxK; i++)
+        {
+            free(nodes[i]);
+        }
+        free(head);
+        free(nodes);
+        // PrintList(&head);
 
         setParent(maxHeap -> root,maxHeap -> root);
         preorderMaxHeapify(maxHeap -> root);
@@ -233,11 +249,10 @@ bool Request_3( Hash_DC * countryHash, char * tok)
             return false;
         }
         GetKMaxValues(maxHeap -> root, k);
-
+        DeallocateMaxHeap(maxHeap -> root);
+        free(maxHeap);
         return true;
     }
-
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -272,7 +287,13 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
         }
         BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
         maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
-
+        for (size_t i = 0; i < maxK; i++)
+        {
+            free(nodes[i] -> dc_name);
+            free(nodes[i]);
+        }
+        free(head);
+        free(nodes);
 
         setParent(maxHeap -> root,maxHeap -> root);
         preorderMaxHeapify(maxHeap -> root);
@@ -283,6 +304,8 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
             return false;
         }
         GetKMaxValues(maxHeap -> root, k);
+        DeallocateMaxHeap(maxHeap -> root);
+        free(maxHeap);
 
         return true;
     }
@@ -336,6 +359,15 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
         BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
         maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
 
+        for (size_t i = 0; i < maxK; i++)
+        {
+            free(nodes[i] -> dc_name);
+            free(nodes[i]);
+        }
+        free(head);
+        free(nodes);
+
+
         setParent(maxHeap -> root,maxHeap -> root);
         preorderMaxHeapify(maxHeap -> root);
         inorderMaxHeap(maxHeap -> root);
@@ -345,6 +377,9 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
             return false;
         }
         GetKMaxValues(maxHeap -> root, k);
+        DeallocateMaxHeap(maxHeap -> root);
+        free(maxHeap);
+
 
         return true;
     }
