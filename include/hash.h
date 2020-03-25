@@ -74,5 +74,5 @@ Hash * Hash_Init(size_t hashSize, size_t bucketSize);
 void Hash_Insert(Hash * ht, long long number, PatientInfo * info);
 void Hash_Print(const Hash * ht);
 void Hash_Deallocate(Hash ** ht,bool remove);
-
+PatientInfo * Hash_Find_Patient(Hash * ht,long long number, const char * recordID);
 #endif
