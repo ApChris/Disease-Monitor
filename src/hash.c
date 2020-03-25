@@ -225,8 +225,10 @@ static void Patient_Deallocate(Patient ** patient,bool remove)
             }
         }
         free((*patient) -> info);
-        *patient = NULL;
+
     }
+    free(*patient);
+    *patient = NULL;
 }
 
 static PatientInfo * Patient_Find_Patient(const Patient * patient, const char * recordID)
