@@ -133,7 +133,7 @@ bool Request_3( Hash_DC * countryHash, char * tok)
     printf("edw\n");
     // get k
     tok = strtok(NULL,delimiters);
-    long k = atoi(tok);
+    size_t k = atoi(tok);
 
     // get country
     tok = strtok(NULL,delimiters);
@@ -233,6 +233,8 @@ bool Request_3( Hash_DC * countryHash, char * tok)
             return false;
         }
         GetKMaxValues(maxHeap -> root, k);
+
+        return true;
     }
 
 
@@ -243,13 +245,12 @@ bool Request_3( Hash_DC * countryHash, char * tok)
 bool Request_4( Hash_DC * diseaseHash, char * tok)
 {
     char delimiters[] = " \n\t\r\v\f\n:,/.-><[]{}|=+*@#$;";
-    printf("edw\n");
     // get k
     tok = strtok(NULL,delimiters);
-    long k = atoi(tok);
+    size_t k = atoi(tok);
 
     // get disease
-    tok = strtok(NULL, " ");
+    tok = strtok(NULL, " \n");
     char * diseaseID;
     diseaseID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
     strcpy(diseaseID,(const  char *)tok);
@@ -258,11 +259,10 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
     if(tok == NULL)
     {
         BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID), diseaseID);
-        inorder(bst -> root);
+        // inorder(bst -> root);
         ListNode * head = NULL;
         inorderSearchNInsertCountry(bst -> root,&head);
         size_t maxK = LenOfList(head);
-        printf("maxK = %ld\n",maxK);
         BinaryTreeNode ** nodes = (BinaryTreeNode **)malloc(sizeof(BinaryTreeNode *)* maxK);
         ListNode * current = head;
         for (size_t i = 0; i < maxK; i++)
@@ -273,18 +273,17 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
         BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
         maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
 
-        PrintList(&head);
 
         setParent(maxHeap -> root,maxHeap -> root);
         preorderMaxHeapify(maxHeap -> root);
-        inorderMaxHeap(maxHeap -> root);
+        // inorderMaxHeap(maxHeap -> root);
         if(k > maxK || k == 0)
         {
             printf("Error Input: Total Diseases are:%ld\nPlease Give a number between 1 - %ld\n",maxK,maxK);
             return false;
         }
         GetKMaxValues(maxHeap -> root, k);
-        // topk-Diseases 3 Greece
+
         return true;
     }
     else
@@ -337,8 +336,6 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
         BinaryMaxHeap * maxHeap = CreateBinaryMaxHeap();
         maxHeap -> root = BuildMaxHeap(nodes,maxHeap -> root, 0 ,maxK);
 
-        PrintList(&head);
-
         setParent(maxHeap -> root,maxHeap -> root);
         preorderMaxHeapify(maxHeap -> root);
         inorderMaxHeap(maxHeap -> root);
@@ -348,6 +345,8 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
             return false;
         }
         GetKMaxValues(maxHeap -> root, k);
+
+        return true;
     }
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
@@ -476,8 +475,6 @@ bool Request_6(Hash * patientHash, char * tok)
 
 bool Request_7(Hash_DC * diseaseHash, char * tok)
 {
-
-    char delimiters[] = " \n\t\r\v\f\n-:,/.><[]{}|=+*@#$;";
     tok = strtok(NULL," \n");
     if(tok == NULL)
     {
@@ -505,7 +502,6 @@ bool Request_7(Hash_DC * diseaseHash, char * tok)
 static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Hash * patientHash, char * request)
 {
 
-    bool result;
     char * tok;
     char delimiters[] = " \n\t\r\v\f\n:,/.><[]{}|=+*@#$";
     tok = strtok(request,delimiters);
@@ -529,6 +525,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
             {
                 printf("\ndiseaseFrequency request has been done successfully!\n");
             }
+            return false;
 
         }
         else if(strcmp(tok,"topk-Diseases") == 0)
@@ -545,6 +542,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
             {
                 printf("\ntopk-Diseases request has been done successfully!\n");
             }
+            return false;
 
         }
         else if(!strcmp(tok,"insertPatientRecord"))
@@ -581,6 +579,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
         return false;
 
     }
+    return true;
 
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
