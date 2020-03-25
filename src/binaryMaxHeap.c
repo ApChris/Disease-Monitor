@@ -144,3 +144,16 @@ void GetKMaxValues(BinaryTreeNode * root, size_t k)
     }
 
 }
+
+
+void DeallocateMaxHeap(BinaryTreeNode * temp)
+{
+    if(temp == NULL)
+    {
+        return;
+    }
+    DeallocateMaxHeap(temp -> left);
+    DeallocateMaxHeap(temp -> right);
+    free(temp);
+
+}
