@@ -25,6 +25,15 @@ static BucketNode_DC * BucketNode_DC_Init(long long number, size_t size, const c
     return bucketnode;
 }
 
+void BucketNode_DC_Deallocate(BucketNode_DC ** node)
+{
+    free((*node) -> dc_name);
+    DeallocateBST((*node) -> bst -> root);
+    free((*node) -> bst);
+
+    free(*node);
+    *node = NULL;
+}
 
 // ----------------------------- BUCKET -----------------------------
 static Bucket_DC * Bucket_DC_Init(size_t bucketSize)
@@ -187,6 +196,21 @@ static BST * Bucket_DC_Get_BSTroot(const Bucket_DC * bucket, long long number, c
     return NULL;
 
 }
+static void Bucket_DC_Deallocate(Bucket_DC ** bucket)
+{
+    size_t i = 0;
+    if(bucket != NULL)
+    {
+        while(i < (*bucket)->length)
+        {
+            BucketNode_DC_Deallocate(&(*bucket)->nodes[i]);
+            i++;
+        }
+        free((*bucket)->nodes);
+    }
+    free(*bucket);
+    *bucket = NULL;
+}
 // ----------------------------- HASH_DC -----------------------------------------
 
 Hash_DC * Hash_DC_Init(size_t hashSize, size_t bucketSize)
@@ -286,4 +310,23 @@ BST * Hash_DC_Get_BSTroot(const Hash_DC * ht,long long number, const char * dc_n
 {
     size_t position = number % ht -> hashSize;
     return Bucket_DC_Get_BSTroot(ht -> bucketTable[position],number,dc_name);
+}
+
+void Hash_DC_Deallocate(Hash_DC ** ht)
+{
+    size_t i = 0;
+    while(i < (*ht) -> hashSize)
+    {
+        Bucket_DC * bucket = (*ht) -> bucketTable[i];
+        while(bucket != NULL)
+        {
+            Bucket_DC * tempBucket = bucket;
+            bucket = bucket -> next;
+            Bucket_DC_Deallocate(&tempBucket);
+        }
+        i++;
+    }
+    free((*ht) -> bucketTable);
+    free(*ht);
+    *ht = NULL;
 }
