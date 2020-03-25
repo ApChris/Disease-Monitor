@@ -11,7 +11,7 @@
 #include "../include/bst.h"
 
 
-Node * CreateNode(Date * entryDate, PatientInfo * info)
+Node * CreateNode(PatientInfo * info)
 {
     Node * node;
     if( (node = (Node *)malloc(sizeof(Node))) == NULL)
@@ -19,11 +19,11 @@ Node * CreateNode(Date * entryDate, PatientInfo * info)
         perror("Error(CreateNode): ");
         exit(EXIT_FAILURE);
     }
-    if( (node -> entryDate = (Date *)malloc(sizeof(Date))) == NULL)
-    {
-        perror("Error(CreateNode): ");
-        exit(EXIT_FAILURE);
-    }
+    // if( (node -> entryDate = (Date *)malloc(sizeof(Date))) == NULL)
+    // {
+    //     perror("Error(CreateNode): ");
+    //     exit(EXIT_FAILURE);
+    // }
     node -> entryDate = info -> entryDate;
     node -> info = info;
     node -> left = NULL;
@@ -107,7 +107,7 @@ Node * PushBST(Node * node, Date * entryDate, PatientInfo * info)
 {
     if(node == NULL)
     {
-        Node * newNode = CreateNode(entryDate, info);
+        Node * newNode = CreateNode(info);
         node = newNode;
         return node;
     }
@@ -260,40 +260,15 @@ void inorderSearchNInsertCountryDate(Node * node,ListNode ** head, Date * entryD
 
 
 }
-//
-// long SearchBST(BST * root, Date * entryDate)
-// {
-//     BST * tempNode;
-//     tempNode = root;
-//     while(tempNode != NULL)
-//     {
-//         if(tempNode -> entryDate == entryDate)
-//         {
-//             printf("\n%ld has been found!!\n",tempNode -> entryDate -> day);
-//             return 1;
-//         }
-//
-//         if(Compare_Date_Time(entryDate, tempNode -> entryDate))
-//         {
-//             tempNode = tempNode -> left;
-//         }
-//         else
-//         {
-//             tempNode = tempNode -> right;
-//         }
-//     }
-//     return 0;
-//
-// }
-//
-//
-// void DeallocateBST(BST * temp)
-// {
-//     if(temp != NULL)
-//     {
-//         free(temp);
-//
-//         BST_Deallocate_Preorder(temp -> left);
-//         BST_Deallocate_Preorder(temp -> right);
-//     }
-// }
+
+void DeallocateBST(Node * temp)
+{
+    if(temp == NULL)
+    {
+        return;
+    }
+    DeallocateBST(temp -> left);
+    DeallocateBST(temp -> right);
+    free(temp);
+
+}
