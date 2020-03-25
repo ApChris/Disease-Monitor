@@ -37,4 +37,5 @@ void MaxHeapify(BinaryTreeNode * root, BinaryTreeNode * node);
 void preorderMaxHeapify(BinaryTreeNode * root);
 
 void GetKMaxValues(BinaryTreeNode * root, size_t k);
+void DeallocateMaxHeap(BinaryTreeNode * temp);
 #endif

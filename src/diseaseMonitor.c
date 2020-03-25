@@ -58,7 +58,7 @@ int main(int argc, char const *argv[])
     }
 
     // Print just for feedback
-    Print_Input(patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
+    // Print_Input(patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
 
     patientHash = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
 
