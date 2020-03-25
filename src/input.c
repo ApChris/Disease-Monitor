@@ -1,6 +1,6 @@
 #include "../include/input.h"
 
-long ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash)
+void ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash)
 {
     // for getline
     char * line = NULL;
@@ -23,15 +23,9 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * dis
     char * tok = NULL;
 
     // The struct that we are going to fill
-    //PatientInfo * info = NULL;
-
-    // extra variables
-    long result;
 
     entryDate = malloc(sizeof(*entryDate));
     exitDate = malloc(sizeof(*exitDate));
-
-
 
     file = fopen(patientRecordsFile, "r");
     printf("%s has been opened successfully!!\n\n", patientRecordsFile); // Feedback
@@ -44,31 +38,26 @@ long ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * dis
         tok = strtok(line, " ");
         recordID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(recordID,(const char *)tok);
-        // recordID[1 + sizeof(char) * strlen(tok)] = '\0';
 
         // Read patientFirstName
         tok = strtok(NULL," ");
         patientFirstName = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(patientFirstName,(const  char *)tok);
-        // patientFirstName[1 + sizeof(char) * strlen(tok)] = '\0';
 
         // Read patientLastName
         tok = strtok(NULL," ");
         patientLastName = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(patientLastName,(const  char *)tok);
-        // patientLastName[1 + sizeof(char) * strlen(tok)] = '\0';
 
         // Read diseaseID
         tok = strtok(NULL," ");
         diseaseID = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(diseaseID,(const  char *)tok);
-        // diseaseID[1 + sizeof(char) * strlen(tok)] = '\0';
 
         // Read country
         tok = strtok(NULL," ");
         country = ( char *)malloc(1 + sizeof(char) * strlen(tok));
         strcpy(country,(const  char *)tok);
-        // country[1 + sizeof(char) * strlen(tok)] = '\0';
 
 
         // read entryDate
