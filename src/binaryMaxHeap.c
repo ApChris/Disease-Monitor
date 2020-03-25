@@ -1,8 +1,6 @@
 
 #include "../include/binaryMaxHeap.h"
 
-
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -88,24 +86,17 @@ void setParent(BinaryTreeNode * node,BinaryTreeNode * parent)
 BinaryTreeNode * BuildMaxHeap(BinaryTreeNode ** arr, BinaryTreeNode * node, size_t i, size_t n)
 {
 
-
     if(i < n)
     {
 
         BinaryTreeNode * newBinaryTreeNode =  CreateBinaryTreeNode(arr[i] -> dc_name, arr[i] -> total_patientes);
         node = newBinaryTreeNode;
-        printf("%ld\n", arr[i] -> total_patientes);
-            //
-
 
         node -> left = BuildMaxHeap(arr, node -> left, 2*i+1 ,n);;
 
-        printf("12->%ld\n", arr[i] -> total_patientes);
 
         node -> right = BuildMaxHeap(arr, node -> right, 2*i+2 ,n);
 
-        // right -> parent = node;
-        printf("r->%ld\n", arr[i] -> total_patientes);
         return node;
 
     }
@@ -123,8 +114,8 @@ void MaxHeapify(BinaryTreeNode * root, BinaryTreeNode * node)
     MaxHeapify(root -> right, root);
     if(node != NULL && (root -> total_patientes > node -> total_patientes))
     {
-        swap(&(root -> dc_name), &(node -> dc_name));
-        swap(&(root -> total_patientes), &(node -> total_patientes));
+        swap((void **)&(root -> dc_name), (void **)&(node -> dc_name));
+        swap((void **)&(root -> total_patientes), (void **)&(node -> total_patientes));
     }
 }
 
