@@ -47,5 +47,5 @@ void Hash_DC_CurrentActivePatients(const Hash_DC * ht);
 void Hash_DC_AllPatients(const Hash_DC * ht);
 BST * Hash_DC_Get_BSTroot(const Hash_DC * ht,long long number, const char * dc_name);
 void Hash_DC_AllPatientsInThatPeriod(const Hash_DC * ht,Date * entryDate, Date * exitDate);
-
+void Hash_DC_Deallocate(Hash_DC ** ht);
 #endif
