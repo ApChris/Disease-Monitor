@@ -63,43 +63,41 @@ void getCurrentPatients(Node * node)
         if(node -> info -> exitDate -> day == TAG)
         {
             tResult++;
-            PatientInfo_Print(node -> info);
+            // PatientInfo_Print(node -> info);
         }
         getCurrentPatients(node -> right);
     }
 }
 
-void getPatientsInThatPeriod(Node * node, Date * entryDate, Date * exitDate)
+void getPatientsInThatPeriod(Node * node, Date * date1, Date * date2)
 {
     if(node != NULL)
     {
-        getPatientsInThatPeriod(node -> left, entryDate, exitDate);
-        if( (Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+        getPatientsInThatPeriod(node -> left, date1, date2);
+        if( (Compare_Date(node -> info -> entryDate, date1) != -1) && (Compare_Date(node -> info -> entryDate, date2) != 1) )
         {
             tResult++;
-            PatientInfo_Print(node -> info);
         }
-        getPatientsInThatPeriod(node -> right, entryDate, exitDate);
+        getPatientsInThatPeriod(node -> right, date1, date2);
     }
 }
 
 // A function which finds the patients from specific country in spesific period
-void getPatientsInThatPeriod_SpecifiCountry(Node * node, Date * entryDate, Date * exitDate, char * country)
+void getPatientsInThatPeriod_SpecifiCountry(Node * node, Date * date1, Date * date2, char * country)
 {
     if(node != NULL)
     {
-        getPatientsInThatPeriod_SpecifiCountry(node -> left, entryDate, exitDate, country);
+        getPatientsInThatPeriod_SpecifiCountry(node -> left, date1, date2, country);
         if(!strcmp(node -> info -> country, country))
         {
             // check date
-            if( (Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            if( (Compare_Date(node -> info -> entryDate, date1) != -1) && (Compare_Date(node -> info -> entryDate, date2) != 1) )
             {
                 tResult++;
-                PatientInfo_Print(node -> info);
             }
         }
 
-        getPatientsInThatPeriod_SpecifiCountry(node -> right, entryDate, exitDate, country);
+        getPatientsInThatPeriod_SpecifiCountry(node -> right, date1, date2, country);
     }
 }
 
@@ -186,32 +184,34 @@ void inorderSearchNInsert(Node * node,ListNode ** head)
         }
         else
         {
-            SearchInList(head,node -> info -> diseaseID)? printf("True\n") : PushListNode(head, 1, node -> info -> diseaseID);
+            if(!SearchInList(head,node -> info -> diseaseID))
+                PushListNode(head, 1, node -> info -> diseaseID);
         }
         inorderSearchNInsert(node -> right, head);
     }
 }
 
-void inorderSearchNInsertDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate)
+void inorderSearchNInsertDate(Node * node,ListNode ** head, Date * date1, Date * date2)
 {
     if(node != NULL)
     {
-        inorderSearchNInsertDate(node -> left, head, entryDate, exitDate);
+        inorderSearchNInsertDate(node -> left, head, date1, date2);
         if(*head == NULL)
         {
-            if((Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            if((Compare_Date(node -> info -> entryDate, date1) != -1) && (Compare_Date(node -> info -> entryDate, date2) != 1) )
             {
                 PushListNode(head, 1, node -> info -> diseaseID);
             }
         }
         else
         {
-            if((Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            if((Compare_Date(node -> info -> entryDate, date1) != -1) && (Compare_Date(node -> info -> entryDate, date2) != 1) )
             {
-                SearchInList(head,node -> info -> diseaseID)? printf("True\n") : PushListNode(head, 1, node -> info -> diseaseID);
+                if(!SearchInList(head,node -> info -> diseaseID))
+                    PushListNode(head, 1, node -> info -> diseaseID);
             }
         }
-        inorderSearchNInsertDate(node -> right, head, entryDate, exitDate);
+        inorderSearchNInsertDate(node -> right, head, date1, date2);
     }
 }
 
@@ -226,7 +226,8 @@ void inorderSearchNInsertCountry(Node * node,ListNode ** head)
         }
         else
         {
-            SearchInList(head,node -> info -> country)? printf("True\n") : PushListNode(head, 1, node -> info -> country);
+            if(!SearchInList(head,node -> info -> country))
+                PushListNode(head, 1, node -> info -> country);
         }
         inorderSearchNInsertCountry(node -> right, head);
     }
@@ -234,28 +235,27 @@ void inorderSearchNInsertCountry(Node * node,ListNode ** head)
 
 }
 
-void inorderSearchNInsertCountryDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate)
+void inorderSearchNInsertCountryDate(Node * node,ListNode ** head, Date * date1, Date * date2)
 {
     if(node != NULL)
     {
-        inorderSearchNInsertCountryDate(node -> left, head, entryDate, exitDate);
+        inorderSearchNInsertCountryDate(node -> left, head, date1, date2);
         if(*head == NULL)
         {
-            if((Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            if((Compare_Date(node -> info -> entryDate, date1) != -1) && (Compare_Date(node -> info -> entryDate, date2) != 1) )
             {
-                printf("Mphka\n");
                 PushListNode(head, 1, node -> info -> country);
             }
         }
         else
         {
-            if((Compare_Date(node -> info -> entryDate, entryDate) != -1) && (Compare_Date(node -> info -> exitDate, exitDate) != 1) )
+            if((Compare_Date(node -> info -> entryDate, date1) != -1) && (Compare_Date(node -> info -> entryDate, date2) != 1) )
             {
-                printf("Mphkaaaaa\n");
-                SearchInList(head,node -> info -> country)? printf("True\n") : PushListNode(head, 1, node -> info -> country);
+                if(!SearchInList(head,node -> info -> country))
+                    PushListNode(head, 1, node -> info -> country);
             }
         }
-        inorderSearchNInsertCountryDate(node -> right, head, entryDate, exitDate);
+        inorderSearchNInsertCountryDate(node -> right, head, date1, date2);
     }
 
 
