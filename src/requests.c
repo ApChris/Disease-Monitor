@@ -7,48 +7,46 @@ bool Request_1( Hash_DC * diseaseHash, char * tok)
     tok = strtok(NULL,delimiters);
     if(tok == NULL)
     {
-        printf("Arguments missing!!\n");
         Hash_DC_AllPatients(diseaseHash);
         return true;
     }
     else
     {
-        Date * entryDate = NULL;
-        Date * exitDate = NULL;
-        entryDate = malloc(sizeof(*entryDate));
-        exitDate = malloc(sizeof(*exitDate));
+        Date * date1 = NULL;
+        Date * date2 = NULL;
+        date1 = malloc(sizeof(*date1));
+        date2 = malloc(sizeof(*date2));
 
-        // entryDate
-        entryDate -> day = (long)atoi(tok);
-
-        tok = strtok(NULL,delimiters);
-        entryDate -> month = (long)atoi(tok);
+        // date1
+        date1 -> day = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        entryDate -> year = (long)atoi(tok);
+        date1 -> month = (long)atoi(tok);
 
-        // exitDate
+        tok = strtok(NULL,delimiters);
+        date1 -> year = (long)atoi(tok);
+
+        // date2
         tok = strtok(NULL,delimiters);
 
         if(tok == NULL)
         {
-            free(entryDate);
-            free(exitDate);
-            printf("You have to add exitDate! Please try again!\n");
+            free(date1);
+            free(date2);
+            printf("You have to add date2! Please try again!\n");
             return true;
         }
 
-        exitDate -> day = (long)atoi(tok);
+        date2 -> day = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        exitDate -> month = (long)atoi(tok);
+        date2 -> month = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        exitDate -> year = (long)atoi(tok);
-        printf("%ld-%ld-%ld\n",entryDate -> day,entryDate -> month,entryDate -> year);
-        Hash_DC_AllPatientsInThatPeriod(diseaseHash, entryDate, exitDate);
-        free(entryDate);
-        free(exitDate);
+        date2 -> year = (long)atoi(tok);
+        Hash_DC_AllPatientsInThatPeriod(diseaseHash, date1, date2);
+        free(date1);
+        free(date2);
         return true;
     }
     return false;
@@ -65,47 +63,49 @@ bool Request_2(Hash_DC * diseaseHash, char * tok)
     strcpy(diseaseID,(const  char *)tok);
 
 
-    Date * entryDate = NULL;
-    Date * exitDate = NULL;
-    entryDate = malloc(sizeof(*entryDate));
-    exitDate = malloc(sizeof(*exitDate));
+    Date * date1 = NULL;
+    Date * date2 = NULL;
+    date1 = malloc(sizeof(*date1));
+    date2 = malloc(sizeof(*date2));
 
-    // // entryDate
+    // // date1
     tok = strtok(NULL, delimiters);
-    entryDate -> day = (long)atoi(tok);
+    date1 -> day = (long)atoi(tok);
 
     tok = strtok(NULL,delimiters);
-    entryDate -> month = (long)atoi(tok);
+    date1 -> month = (long)atoi(tok);
 
     tok = strtok(NULL,delimiters);
-    entryDate -> year = (long)atoi(tok);
+    date1 -> year = (long)atoi(tok);
 
-    // exitDate
+    // date2
     tok = strtok(NULL,delimiters);
 
     if(tok == NULL)
     {
-        free(entryDate);
-        free(exitDate);
-        printf("You have to add exitDate! Please try again!\n");
+        free(date1);
+        free(date2);
+        printf("You have to add date2! Please try again!\n");
         return true;
     }
-    // exitDate
-    exitDate -> day = (long)atoi(tok);
+    // date2
+    date2 -> day = (long)atoi(tok);
 
     tok = strtok(NULL,delimiters);
-    exitDate -> month = (long)atoi(tok);
+    date2 -> month = (long)atoi(tok);
 
     tok = strtok(NULL,delimiters);
-    exitDate -> year = (long)atoi(tok);
+    date2 -> year = (long)atoi(tok);
 // diseaseFrequency H1N1 10-10-2010 20-20-2020 Greece
 
     tok = strtok(NULL,delimiters);
     // without country
     if(tok == NULL)
     {
+        tResult = 0;
         BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID),diseaseID);
-        getPatientsInThatPeriod(bst -> root, entryDate, exitDate);
+        getPatientsInThatPeriod(bst -> root, date1, date2);
+        printf("%ld\n",tResult);
     }
     // user gave a country
     else
@@ -117,12 +117,12 @@ bool Request_2(Hash_DC * diseaseHash, char * tok)
         strcpy(country,(const  char *)tok);
 
         BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID),diseaseID);
-        getPatientsInThatPeriod_SpecifiCountry(bst -> root, entryDate, exitDate, country);
-        printf("Result = %ld\n", tResult);
+        getPatientsInThatPeriod_SpecifiCountry(bst -> root, date1, date2, country);
+        printf("%ld\n", tResult);
         free(country);
     }
-    free(entryDate);
-    free(exitDate);
+    free(date1);
+    free(date2);
     return true;
 
 }
@@ -184,43 +184,43 @@ bool Request_3( Hash_DC * countryHash, char * tok)
     }
     else
     {
-        Date * entryDate = NULL;
-        Date * exitDate = NULL;
-        entryDate = malloc(sizeof(*entryDate));
-        exitDate = malloc(sizeof(*exitDate));
+        Date * date1 = NULL;
+        Date * date2 = NULL;
+        date1 = malloc(sizeof(*date1));
+        date2 = malloc(sizeof(*date2));
 
-        // entryDate
-        entryDate -> day = (long)atoi(tok);
-
-        tok = strtok(NULL,delimiters);
-        entryDate -> month = (long)atoi(tok);
+        // date1
+        date1 -> day = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        entryDate -> year = (long)atoi(tok);
+        date1 -> month = (long)atoi(tok);
 
-        // exitDate
+        tok = strtok(NULL,delimiters);
+        date1 -> year = (long)atoi(tok);
+
+        // date2
         tok = strtok(NULL,delimiters);
 
         if(tok == NULL)
         {
-            free(entryDate);
-            free(exitDate);
-            printf("You have to add exitDate! Please try again!\n");
+            free(date1);
+            free(date2);
+            printf("You have to add date2! Please try again!\n");
             return true;
         }
-        // exitDate
-        exitDate -> day = (long)atoi(tok);
+        // date2
+        date2 -> day = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        exitDate -> month = (long)atoi(tok);
+        date2 -> month = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        exitDate -> year = (long)atoi(tok);
+        date2 -> year = (long)atoi(tok);
 
         BST * bst = Hash_DC_Get_BSTroot(countryHash,Hash_Function_DJB2((unsigned char *)country), country);
         inorder(bst -> root);
         ListNode * head = NULL;
-        inorderSearchNInsertDate(bst -> root,&head, entryDate, exitDate);
+        inorderSearchNInsertDate(bst -> root,&head, date1, date2);
         size_t maxK = LenOfList(head);
         BinaryTreeNode ** nodes = (BinaryTreeNode **)malloc(sizeof(BinaryTreeNode *)* maxK);
         ListNode * current = head;
@@ -311,43 +311,43 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
     }
     else
     {
-        Date * entryDate = NULL;
-        Date * exitDate = NULL;
-        entryDate = malloc(sizeof(*entryDate));
-        exitDate = malloc(sizeof(*exitDate));
+        Date * date1 = NULL;
+        Date * date2 = NULL;
+        date1 = malloc(sizeof(*date1));
+        date2 = malloc(sizeof(*date2));
 
-        // entryDate
-        entryDate -> day = (long)atoi(tok);
-
-        tok = strtok(NULL,delimiters);
-        entryDate -> month = (long)atoi(tok);
+        // date1
+        date1 -> day = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        entryDate -> year = (long)atoi(tok);
+        date1 -> month = (long)atoi(tok);
 
-        // exitDate
+        tok = strtok(NULL,delimiters);
+        date1 -> year = (long)atoi(tok);
+
+        // date2
         tok = strtok(NULL,delimiters);
 
         if(tok == NULL)
         {
-            free(entryDate);
-            free(exitDate);
-            printf("You have to add exitDate! Please try again!\n");
+            free(date1);
+            free(date2);
+            printf("You have to add date2! Please try again!\n");
             return true;
         }
-        // exitDate
-        exitDate -> day = (long)atoi(tok);
+        // date2
+        date2 -> day = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        exitDate -> month = (long)atoi(tok);
+        date2 -> month = (long)atoi(tok);
 
         tok = strtok(NULL,delimiters);
-        exitDate -> year = (long)atoi(tok);
+        date2 -> year = (long)atoi(tok);
 
         BST * bst = Hash_DC_Get_BSTroot(diseaseHash,Hash_Function_DJB2((unsigned char *)diseaseID), diseaseID);
-        inorder(bst -> root);
+        // inorder(bst -> root);
         ListNode * head = NULL;
-        inorderSearchNInsertCountryDate(bst -> root,&head, entryDate, exitDate);
+        inorderSearchNInsertCountryDate(bst -> root,&head, date1, date2);
         size_t maxK = LenOfList(head);
         BinaryTreeNode ** nodes = (BinaryTreeNode **)malloc(sizeof(BinaryTreeNode *)* maxK);
         ListNode * current = head;
@@ -387,7 +387,6 @@ bool Request_4( Hash_DC * diseaseHash, char * tok)
 ///////////////////////////////////////////////////////////////////////////////////////////////
 bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash, char * tok)
 {
-
     char * recordID = NULL;
     char * patientFirstName = NULL;
     char * patientLastName = NULL;
@@ -427,7 +426,6 @@ bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash,
     country = ( char *)malloc(1 + sizeof(char) * strlen(tok));
     strcpy(country,(const  char *)tok);
 
-
     // read entryDate
     tok = strtok(NULL,delimiters);
     entryDate -> day = (long)atoi(tok);
@@ -455,7 +453,8 @@ bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash,
         free(patientLastName);
         free(diseaseID);
         free(country);
-
+        free(entryDate);
+        free(exitDate);
         return true;
     }
 
@@ -476,6 +475,8 @@ bool Request_5(Hash * patientHash, Hash_DC * diseaseHash, Hash_DC * countryHash,
     free(patientLastName);
     free(diseaseID);
     free(country);
+    free(entryDate);
+    free(exitDate);
     return true;
 }
 
@@ -513,7 +514,7 @@ bool Request_7(Hash_DC * diseaseHash, char * tok)
     tok = strtok(NULL," \n");
     if(tok == NULL)
     {
-        printf("Arguments missing!!\n");
+        tResult = 0;
         Hash_DC_CurrentActivePatients(diseaseHash);
         return true;
     }
@@ -538,24 +539,22 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
 {
 
     char * tok;
-    char delimiters[] = " \n\t\r\v\f\n:,/.><[]{}|=+*@#$";
+    char delimiters[] = " \n\t\r\v\f\n:,.><[]{}|=+*@#$";
     tok = strtok(request,delimiters);
 
     if(tok != NULL)
     {
-        if(strcmp(tok,"globalDiseaseStats") == 0)
+        if(strcmp(tok,"/globalDiseaseStats") == 0)
         {
             if(Request_1(diseaseHash,tok))
             {
                 printf("\nglobalDiseaseStats request has been done successfully!\n");
             }
-            printf("6\n");
             return false;
 
         }
-        else if(strcmp(tok,"diseaseFrequency") == 0)
+        else if(strcmp(tok,"/diseaseFrequency") == 0)
         {
-            printf("2\n");
             if(Request_2(diseaseHash,tok))
             {
                 printf("\ndiseaseFrequency request has been done successfully!\n");
@@ -563,7 +562,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
             return false;
 
         }
-        else if(strcmp(tok,"topk-Diseases") == 0)
+        else if(strcmp(tok,"/topk-Diseases") == 0)
         {
 
             if(Request_3(countryHash,tok))
@@ -571,7 +570,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
                 printf("\ntopk-Diseases request has been done successfully!\n");
             }
         }
-        else if(strcmp(tok,"topk-Countries") == 0)
+        else if(strcmp(tok,"/topk-Countries") == 0)
         {
             if(Request_4(diseaseHash,tok))
             {
@@ -580,7 +579,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
             return false;
 
         }
-        else if(!strcmp(tok,"insertPatientRecord"))
+        else if(strcmp(tok,"/insertPatientRecord") == 0)
         {
             if(Request_5(patientHash, diseaseHash, countryHash, tok))
             {
@@ -589,7 +588,7 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
             return false;
 
         }
-        else if(strcmp(tok,"recordPatientExit") == 0)
+        else if(strcmp(tok,"/recordPatientExit") == 0)
         {
             if(Request_6(patientHash,tok))
             {
@@ -598,14 +597,14 @@ static long Read_Requests_Parse(Hash_DC * diseaseHash, Hash_DC * countryHash, Ha
             return false;
 
         }
-        else if(strcmp(tok,"numCurrentPatients") == 0)
+        else if(strcmp(tok,"/numCurrentPatients") == 0)
         {
             Request_7(diseaseHash,tok);
 
             printf("--------------------------------------------\n");
             return false;
         }
-        else if(strcmp(tok,"exit") == 0)
+        else if(strcmp(tok,"/exit") == 0)
         {
             printf("Promt has been closed!!!\n");
             return true;
@@ -630,6 +629,7 @@ void Read_Requests(Hash_DC * diseaseHash, Hash_DC * countryHash, Hash * patientH
     {
         if(Read_Requests_Parse(diseaseHash, countryHash, patientHash, request))
         {
+            free(request);
             break;
         }
     }
