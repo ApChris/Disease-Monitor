@@ -31,7 +31,8 @@ void inorderSearchNInsertCountry(Node * node,ListNode ** head);
 void inorderSearchNInsert(Node * node,ListNode ** head);
 void inorderSearchNInsertDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate);
 void inorderSearchNInsertCountryDate(Node * node,ListNode ** head, Date * entryDate, Date * exitDate);
-void getPatientsInThatPeriod(Node * node, Date * entryDate, Date * exitDate);
-void getPatientsInThatPeriod_SpecifiCountry(Node * node, Date * entryDate, Date * exitDate, char * country);
+
+void getPatientsInThatPeriod(Node * node, Date * date1, Date * date2);
+void getPatientsInThatPeriod_SpecifiCountry(Node * node, Date * date1, Date * exitDate, char * date2);
 void getCurrentPatients(Node * node);
 #endif
