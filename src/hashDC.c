@@ -130,8 +130,10 @@ static void Bucket_DC_CurrentActivePatients(const Bucket_DC * bucket)
     }
     while(i < bucket -> length)
     {
-        printf("-->%s\n", bucket -> nodes[i] -> dc_name);
+            tResult = 0;
+        printf("%s: ", bucket -> nodes[i] -> dc_name);
         getCurrentPatients(bucket -> nodes[i] -> bst -> root);
+        printf("%ld\n",tResult);
         i++;
     }
     Bucket_DC_CurrentActivePatients(bucket -> next);
@@ -153,7 +155,7 @@ static void Bucket_DC_AllPatients(const Bucket_DC * bucket)
 }
 
 
-static void Bucket_DC_AllPatientsInThatPeriod(const Bucket_DC * bucket, Date * entryDate, Date * exitDate)
+static void Bucket_DC_AllPatientsInThatPeriod(const Bucket_DC * bucket, Date * date1, Date * date2)
 {
     size_t i = 0;
     if(bucket == NULL)
@@ -163,12 +165,12 @@ static void Bucket_DC_AllPatientsInThatPeriod(const Bucket_DC * bucket, Date * e
     while(i < bucket -> length)
     {
         tResult = 0;
-        printf("-->%s\n", bucket -> nodes[i] -> dc_name);
-        getPatientsInThatPeriod(bucket -> nodes[i] -> bst -> root, entryDate, exitDate);
-        printf("--- = %ld\n",tResult);
+        printf("%s: ", bucket -> nodes[i] -> dc_name);
+        getPatientsInThatPeriod(bucket -> nodes[i] -> bst -> root, date1, date2);
+        printf("%ld\n",tResult);
         i++;
     }
-    Bucket_DC_AllPatientsInThatPeriod(bucket -> next, entryDate, exitDate);
+    Bucket_DC_AllPatientsInThatPeriod(bucket -> next, date1, date2);
 }
 
 
@@ -295,12 +297,12 @@ void Hash_DC_AllPatients(const Hash_DC * ht)
     }
 }
 
-void Hash_DC_AllPatientsInThatPeriod(const Hash_DC * ht,Date * entryDate, Date * exitDate)
+void Hash_DC_AllPatientsInThatPeriod(const Hash_DC * ht,Date * date1, Date * date2)
 {
     size_t i = 0;
     while(i < ht -> hashSize)
     {
-        Bucket_DC_AllPatientsInThatPeriod(ht -> bucketTable[i], entryDate, exitDate);
+        Bucket_DC_AllPatientsInThatPeriod(ht -> bucketTable[i], date1, date2);
         i++;
     }
 }
