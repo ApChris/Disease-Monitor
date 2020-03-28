@@ -131,7 +131,7 @@ static void Bucket_DC_CurrentActivePatients(const Bucket_DC * bucket)
     while(i < bucket -> length)
     {
             tResult = 0;
-        printf("%s: ", bucket -> nodes[i] -> dc_name);
+        printf("%s ", bucket -> nodes[i] -> dc_name);
         getCurrentPatients(bucket -> nodes[i] -> bst -> root);
         printf("%ld\n",tResult);
         i++;
@@ -148,7 +148,7 @@ static void Bucket_DC_AllPatients(const Bucket_DC * bucket)
     }
     while(i < bucket -> length)
     {
-        printf("-->%s-->%ld\n", bucket -> nodes[i] -> dc_name, bucket -> nodes[i] -> bst -> totalNodes);
+        printf("%s %ld\n", bucket -> nodes[i] -> dc_name, bucket -> nodes[i] -> bst -> totalNodes);
         i++;
     }
     Bucket_DC_AllPatients(bucket -> next);
@@ -165,7 +165,7 @@ static void Bucket_DC_AllPatientsInThatPeriod(const Bucket_DC * bucket, Date * d
     while(i < bucket -> length)
     {
         tResult = 0;
-        printf("%s: ", bucket -> nodes[i] -> dc_name);
+        printf("%s ", bucket -> nodes[i] -> dc_name);
         getPatientsInThatPeriod(bucket -> nodes[i] -> bst -> root, date1, date2);
         printf("%ld\n",tResult);
         i++;
@@ -246,7 +246,7 @@ Hash_DC * Hash_DC_Init(size_t hashSize, size_t bucketSize)
         ht -> bucketTable[i] = NULL;
         i++;
     }
-    printf("\nHash_DC_Init has been completed successfully!\n\n");        // Feedback
+    // printf("\nHash_DC_Init has been completed successfully!\n\n");        // Feedback
 
     return ht;                                          // Return pointer
 }
