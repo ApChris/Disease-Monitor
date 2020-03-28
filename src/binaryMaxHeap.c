@@ -138,7 +138,7 @@ void GetKMaxValues(BinaryTreeNode * root, size_t k)
         {
             return;
         }
-        printf("-> %s -> %ld\n",root -> dc_name, root -> total_patientes);
+        printf("%s %ld\n",root -> dc_name, root -> total_patientes);
         root -> total_patientes = 0;
         preorderMaxHeapify(root);
     }
