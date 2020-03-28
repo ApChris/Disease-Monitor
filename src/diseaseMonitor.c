@@ -37,8 +37,8 @@ int main(int argc, char const *argv[])
     {
       if(strcmp(argv[i],"-p") == 0)         // patient FILE
       {
-          patientRecordsFile = (char *)malloc(sizeof(char)*strlen(argv[i+1]) + 5);
-          strcpy(patientRecordsFile,"etc/");
+          patientRecordsFile = (char *)malloc(sizeof(char)*strlen(argv[i+1]) + 8);
+          strcpy(patientRecordsFile,"../etc/");
           strcat(patientRecordsFile,argv[i+1]);
 
       }
