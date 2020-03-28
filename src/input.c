@@ -28,7 +28,7 @@ void ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * dis
     exitDate = malloc(sizeof(*exitDate));
 
     file = fopen(patientRecordsFile, "r");
-    printf("%s has been opened successfully!!\n\n", patientRecordsFile); // Feedback
+    // printf("%s has been opened successfully!!\n\n", patientRecordsFile); // Feedback
 
     while((read = getline(&line,&length, file)) != -1)
     {
@@ -115,7 +115,7 @@ void ReadFile(const char * patientRecordsFile, Hash * patientHash, Hash_DC * dis
     free(exitDate);
     free(line);
     fclose(file);
-    printf("\n\n%s has been closed successfully!!\n", patientRecordsFile); // Feedback
+    // printf("\n\n%s has been closed successfully!!\n", patientRecordsFile); // Feedback
 }
 
 void Print_Input(char * patientRecordsFile, long diseaseHashtableNumOfEntries, long countryHashtableNumOfEntries, long bucketSize)

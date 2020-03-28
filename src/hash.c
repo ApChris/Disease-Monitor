@@ -455,7 +455,7 @@ Hash * Hash_Init(size_t hashSize, size_t bucketSize)
         ht -> bucketTable[i] = NULL;
         i++;
     }
-    printf("\nHash_Init has been completed successfully!\n\n");        // Feedback
+    // printf("\nHash_Init has been completed successfully!\n\n");        // Feedback
 
     return ht;                                          // Return pointer
 }
