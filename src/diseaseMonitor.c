@@ -15,13 +15,11 @@
 
 int main(int argc, char const *argv[])
 {
-    // long error;                             // A variable that works as error flag
-
 
     long diseaseHashtableNumOfEntries;      // Size of disease Hash Table
     long countryHashtableNumOfEntries;      // Size of country Hash Table
     long bucketSize;                        // Bytes number of hashTable's bucket
-    char * patientRecordsFile = NULL;              // patientRecordFile
+    char * patientRecordsFile = NULL;       // patientRecordFile
 
 
     Hash * patientHash;
@@ -56,9 +54,6 @@ int main(int argc, char const *argv[])
           bucketSize = atoi(argv[i+1]);
       }
     }
-
-    // Print just for feedback
-    // Print_Input(patientRecordsFile,diseaseHashtableNumOfEntries,countryHashtableNumOfEntries,bucketSize);
 
     patientHash = Hash_Init(diseaseHashtableNumOfEntries, bucketSize);
 
